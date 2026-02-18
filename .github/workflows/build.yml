@@ -59,7 +59,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           tag: ${{ github.ref_name }}
-          restrictToTypes: 'feat,fix,misc,chore' # others are ci,refactor,cleanup
+          restrictToTypes: 'feat,fix,misc,chore,refactor' # others are ci
           useGitmojis: false
           reverseOrder: true
 
