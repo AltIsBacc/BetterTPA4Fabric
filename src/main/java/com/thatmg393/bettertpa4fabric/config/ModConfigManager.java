@@ -1,9 +1,9 @@
-package com.thatmg393.tpa4fabric.config;
+package com.thatmg393.bettertpa4fabric.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.thatmg393.tpa4fabric.TPA4Fabric;
-import com.thatmg393.tpa4fabric.config.data.ModConfigData;
+import com.thatmg393.bettertpa4fabric.BetterTPA4Fabric;
+import com.thatmg393.bettertpa4fabric.config.data.ModConfigData;
 
 import net.fabricmc.loader.api.FabricLoader;
 
@@ -19,7 +19,7 @@ public class ModConfigManager {
     private static final Gson GSON = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
     public static final File CONFIG_PATH = new File(Paths.get(
             FabricLoader.getInstance().getConfigDir().toString(),
-            TPA4Fabric.MOD_ID + ".json"
+            BetterTPA4Fabric.MOD_ID + ".json"
         ).toString()
     );
 
@@ -35,13 +35,13 @@ public class ModConfigManager {
             ModConfigData parsedConfig = GSON.fromJson(bufferedReader, ModConfigData.class);
 
             if (parsedConfig.configVersion != defaultConfig.configVersion)
-                TPA4Fabric.LOGGER.warn("Config versions DO NOT MATCH!"); // TODO? : do smth with old conf ver
+                BetterTPA4Fabric.LOGGER.warn("Config versions DO NOT MATCH!"); // TODO? : do smth with old conf ver
             
             loadedConfig = parsedConfig;
         } catch (FileNotFoundException e) {
-            TPA4Fabric.LOGGER.error("An exception occurred! " + e.toString());
+            BetterTPA4Fabric.LOGGER.error("An exception occurred! " + e.toString());
 
-            TPA4Fabric.LOGGER.info("Using default config instead...");
+            BetterTPA4Fabric.LOGGER.info("Using default config instead...");
             loadedConfig = new ModConfigData();
             saveConfig();
         }
@@ -58,7 +58,7 @@ public class ModConfigManager {
             String serializedJson = GSON.toJson(loadedConfig);
             fileWriter.write(serializedJson);
         } catch (IOException e) {
-            TPA4Fabric.LOGGER.error(e.toString());
+            BetterTPA4Fabric.LOGGER.error(e.toString());
         }
     }
 }

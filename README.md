@@ -1,4 +1,4 @@
-# TPA4Fabric
+# BetterTPA4Fabric
 A simple TPA mod for Fabric.
 
 # Commands

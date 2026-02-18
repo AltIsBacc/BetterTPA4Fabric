@@ -1,13 +1,13 @@
-package com.thatmg393.tpa4fabric.tpa.request.base;
+package com.thatmg393.bettertpa4fabric.tpa.request.base;
 
-import static com.thatmg393.tpa4fabric.utils.MCTextUtils.fromLang;
+import static com.thatmg393.bettertpa4fabric.utils.MCTextUtils.fromLang;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.thatmg393.tpa4fabric.TPA4Fabric;
-import com.thatmg393.tpa4fabric.config.ModConfigManager;
-import com.thatmg393.tpa4fabric.tpa.wrapper.TPAPlayerWrapper;
+import com.thatmg393.bettertpa4fabric.BetterTPA4Fabric;
+import com.thatmg393.bettertpa4fabric.config.ModConfigManager;
+import com.thatmg393.bettertpa4fabric.tpa.wrapper.TPAPlayerWrapper;
 
 public abstract class BaseRequest {
     private final Timer expirationTimer = new Timer();
@@ -24,15 +24,15 @@ public abstract class BaseRequest {
             public void run() {
                 receiver.removeTPARequest(requester.uuid);
 
-                requester.sendMessage(fromLang("tpa4fabric.message.requester.tpa.expire", receiver.name));
-                receiver.sendMessage(fromLang("tpa4fabric.message.receiver.tpa.expire", requester.name));
+                requester.sendMessage(fromLang("bettertpa4fabric.message.requester.tpa.expire", receiver.name));
+                receiver.sendMessage(fromLang("bettertpa4fabric.message.receiver.tpa.expire", requester.name));
             }
         }, ModConfigManager.loadOrGetConfig().tpaExpireTime * 1000);
     }
 
     private void consume() {
         expirationTimer.cancel();
-        TPA4Fabric.LOGGER.info("Consumed TPA request from " + requester.name);
+        BetterTPA4Fabric.LOGGER.info("Consumed TPA request from " + requester.name);
     }
 
     public void accept() {
@@ -46,8 +46,8 @@ public abstract class BaseRequest {
     public void default_onTick(long delta) {
         if ((delta % 1000) == 0) {
             float remain = (delta / 1000);
-            requester.sendMessage(fromLang("tpa4fabric.message.teleport.countdown", remain));
-            receiver.sendMessage(fromLang("tpa4fabric.message.teleport.countdown", remain));
+            requester.sendMessage(fromLang("bettertpa4fabric.message.teleport.countdown", remain));
+            receiver.sendMessage(fromLang("bettertpa4fabric.message.teleport.countdown", remain));
         }
     }
 }

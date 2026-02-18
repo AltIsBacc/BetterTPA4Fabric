@@ -1,6 +1,6 @@
-package com.thatmg393.tpa4fabric.tpa.wrapper;
+package com.thatmg393.bettertpa4fabric.tpa.wrapper;
 
-import static com.thatmg393.tpa4fabric.utils.MCTextUtils.fromLang;
+import static com.thatmg393.bettertpa4fabric.utils.MCTextUtils.fromLang;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -9,18 +9,18 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
-import com.thatmg393.tpa4fabric.TPA4Fabric;
-import com.thatmg393.tpa4fabric.config.ModConfigManager;
-import com.thatmg393.tpa4fabric.tpa.request.TPAHereRequest;
-import com.thatmg393.tpa4fabric.tpa.request.TPARequest;
-import com.thatmg393.tpa4fabric.tpa.request.base.BaseRequest;
-import com.thatmg393.tpa4fabric.tpa.request.callback.TPAStateCallback;
-import com.thatmg393.tpa4fabric.tpa.request.callback.enums.TPAFailReason;
-import com.thatmg393.tpa4fabric.tpa.request.type.RequestType;
-import com.thatmg393.tpa4fabric.tpa.wrapper.models.Coordinates;
-import com.thatmg393.tpa4fabric.tpa.wrapper.models.TeleportParameters;
-import com.thatmg393.tpa4fabric.tpa.wrapper.result.CommandResult;
-import com.thatmg393.tpa4fabric.tpa.wrapper.result.CommandResultWrapper;
+import com.thatmg393.bettertpa4fabric.BetterTPA4Fabric;
+import com.thatmg393.bettertpa4fabric.config.ModConfigManager;
+import com.thatmg393.bettertpa4fabric.tpa.request.TPAHereRequest;
+import com.thatmg393.bettertpa4fabric.tpa.request.TPARequest;
+import com.thatmg393.bettertpa4fabric.tpa.request.base.BaseRequest;
+import com.thatmg393.bettertpa4fabric.tpa.request.callback.TPAStateCallback;
+import com.thatmg393.bettertpa4fabric.tpa.request.callback.enums.TPAFailReason;
+import com.thatmg393.bettertpa4fabric.tpa.request.type.RequestType;
+import com.thatmg393.bettertpa4fabric.tpa.wrapper.models.Coordinates;
+import com.thatmg393.bettertpa4fabric.tpa.wrapper.models.TeleportParameters;
+import com.thatmg393.bettertpa4fabric.tpa.wrapper.result.CommandResult;
+import com.thatmg393.bettertpa4fabric.tpa.wrapper.result.CommandResultWrapper;
 
 import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
@@ -158,14 +158,14 @@ public class TPAPlayerWrapper implements TPAStateCallback {
 
     public void markInCooldown() {
         if (lastCommandInvokeTime != null)
-            TPA4Fabric.LOGGER.warn("Cannot mark " + name + " in cooldown while they are still on cooldown.");
+            BetterTPA4Fabric.LOGGER.warn("Cannot mark " + name + " in cooldown while they are still on cooldown.");
         
         lastCommandInvokeTime = Instant.now();
     }
 
     public void updatePlayerReference(ServerPlayerEntity newPlayer) {
         if (!newPlayer.getUuidAsString().equals(uuid)) {
-            TPA4Fabric.LOGGER.info("Tried to update player reference with an another player");
+            BetterTPA4Fabric.LOGGER.info("Tried to update player reference with an another player");
             return;
         }
         
@@ -184,7 +184,7 @@ public class TPAPlayerWrapper implements TPAStateCallback {
     }
 
     public void sendMessage(MutableText message) {
-        player.sendMessage(Text.literal("[TPA4Fabric]: ").formatted(Formatting.BOLD).formatted(Formatting.GOLD).append(message.formatted(Formatting.BOLD)));
+        player.sendMessage(Text.literal("[BetterTPA4Fabric]: ").formatted(Formatting.BOLD).formatted(Formatting.GOLD).append(message.formatted(Formatting.BOLD)));
     }
 
     public Coordinates getCurrentCoordinates() {
@@ -232,26 +232,26 @@ public class TPAPlayerWrapper implements TPAStateCallback {
 
     @Override
     public void onTPASuccess(TeleportParameters params) {
-        sendMessage(fromLang("tpa4fabric.message.teleport.success"));
+        sendMessage(fromLang("bettertpa4fabric.message.teleport.success"));
     }
 
     @Override
     public void onTPAFail(TPAFailReason reason) {
         switch (reason) {
             case YOU_MOVED:
-                sendMessage(fromLang("tpa4fabric.message.fail.requester.moved"));
+                sendMessage(fromLang("bettertpa4fabric.message.fail.requester.moved"));
             break;
 
             case REQUESTER_MOVED:
-                sendMessage(fromLang("tpa4fabric.message.fail.receiver.requester_moved"));
+                sendMessage(fromLang("bettertpa4fabric.message.fail.receiver.requester_moved"));
             break;
 
             case RECEIVER_DEAD_OR_DISCONNECTED:
-                sendMessage(fromLang("tpa4fabric.message.fail.receiver_dead_or_disconnected"));
+                sendMessage(fromLang("bettertpa4fabric.message.fail.receiver_dead_or_disconnected"));
             break;
 
             case REQUESTER_DEAD_OR_DISCONNECTED:
-                sendMessage(fromLang("tpa4fabric.message.fail.requester_dead_or_disconnected"));
+                sendMessage(fromLang("bettertpa4fabric.message.fail.requester_dead_or_disconnected"));
             break;
         }
     }

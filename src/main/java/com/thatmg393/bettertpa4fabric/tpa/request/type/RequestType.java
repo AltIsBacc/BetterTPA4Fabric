@@ -1,4 +1,4 @@
-package com.thatmg393.tpa4fabric.tpa.request.type;
+package com.thatmg393.bettertpa4fabric.tpa.request.type;
 
 public enum RequestType {
     NORMAL,

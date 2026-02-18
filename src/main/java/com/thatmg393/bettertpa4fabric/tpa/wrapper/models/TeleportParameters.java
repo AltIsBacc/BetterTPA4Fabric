@@ -1,4 +1,4 @@
-package com.thatmg393.tpa4fabric.tpa.wrapper.models;
+package com.thatmg393.bettertpa4fabric.tpa.wrapper.models;
 
 import net.minecraft.server.world.ServerWorld;
 

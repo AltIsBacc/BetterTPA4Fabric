@@ -1,4 +1,4 @@
-package com.thatmg393.tpa4fabric;
+package com.thatmg393.bettertpa4fabric;
 
 import static net.minecraft.server.command.CommandManager.argument;
 import static net.minecraft.server.command.CommandManager.literal;
@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.thatmg393.tpa4fabric.config.ModConfigManager;
-import com.thatmg393.tpa4fabric.tpa.TPAManager;
+import com.thatmg393.bettertpa4fabric.config.ModConfigManager;
+import com.thatmg393.bettertpa4fabric.tpa.TPAManager;
 
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -16,18 +16,18 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 
-public class TPA4Fabric implements DedicatedServerModInitializer {
-	public static final String MOD_ID = "tpa4fabric";
+public class BetterTPA4Fabric implements DedicatedServerModInitializer {
+	public static final String MOD_ID = "betterbettertpa4fabric";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
 	public void onInitializeServer() {
-		LOGGER.info("Using TPA4Fabric " + FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString());
+		LOGGER.info("Using BetterTPA4Fabric " + FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString());
 		LOGGER.info("Loading config...");
 		ModConfigManager.loadOrGetConfig();
 		LOGGER.info("Loaded!");
 
-		LOGGER.info("Registering TPA4Fabric commands...");
+		LOGGER.info("Registering BetterTPA4Fabric commands...");
 		registerCommands();
 		LOGGER.info("Registered, have fun!");
 

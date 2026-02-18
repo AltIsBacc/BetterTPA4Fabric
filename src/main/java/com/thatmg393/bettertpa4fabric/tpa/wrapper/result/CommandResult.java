@@ -1,4 +1,4 @@
-package com.thatmg393.tpa4fabric.tpa.wrapper.result;
+package com.thatmg393.bettertpa4fabric.tpa.wrapper.result;
 
 public enum CommandResult {
     SUCCESS,

@@ -1,13 +1,13 @@
-package com.thatmg393.tpa4fabric.tpa.request;
+package com.thatmg393.bettertpa4fabric.tpa.request;
 
-import com.thatmg393.tpa4fabric.TPA4Fabric;
-import com.thatmg393.tpa4fabric.config.ModConfigManager;
-import com.thatmg393.tpa4fabric.tpa.request.base.BaseRequest;
-import com.thatmg393.tpa4fabric.tpa.request.callback.enums.TPAFailReason;
-import com.thatmg393.tpa4fabric.tpa.wrapper.TPAPlayerWrapper;
-import com.thatmg393.tpa4fabric.tpa.wrapper.models.Coordinates;
-import com.thatmg393.tpa4fabric.tpa.wrapper.models.TeleportParameters;
-import com.thatmg393.tpa4fabric.utils.CountdownTimer;
+import com.thatmg393.bettertpa4fabric.BetterTPA4Fabric;
+import com.thatmg393.bettertpa4fabric.config.ModConfigManager;
+import com.thatmg393.bettertpa4fabric.tpa.request.base.BaseRequest;
+import com.thatmg393.bettertpa4fabric.tpa.request.callback.enums.TPAFailReason;
+import com.thatmg393.bettertpa4fabric.tpa.wrapper.TPAPlayerWrapper;
+import com.thatmg393.bettertpa4fabric.tpa.wrapper.models.Coordinates;
+import com.thatmg393.bettertpa4fabric.tpa.wrapper.models.TeleportParameters;
+import com.thatmg393.bettertpa4fabric.utils.CountdownTimer;
 
 public class TPARequest extends BaseRequest {
     public TPARequest(TPAPlayerWrapper requester, TPAPlayerWrapper receiver) {
@@ -52,7 +52,7 @@ public class TPARequest extends BaseRequest {
 
                 if (requester.beforeTeleport(teleportParams)) {
                     requester.teleport(teleportParams);
-                    TPA4Fabric.LOGGER.info(requester.name + " teleported to " + teleportParams);
+                    BetterTPA4Fabric.LOGGER.info(requester.name + " teleported to " + teleportParams);
 
                     requester.onTPASuccess(teleportParams); // might just pass 'receiver' fr?
                     receiver.onTPASuccess(null);

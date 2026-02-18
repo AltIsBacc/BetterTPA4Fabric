@@ -1,4 +1,4 @@
-package com.thatmg393.tpa4fabric.config.data;
+package com.thatmg393.bettertpa4fabric.config.data;
 
 public class ModConfigData {
     public int tpaCooldown = 5; // in seconds

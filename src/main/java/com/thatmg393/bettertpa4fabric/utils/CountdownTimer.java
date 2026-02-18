@@ -1,4 +1,4 @@
-package com.thatmg393.tpa4fabric.utils;
+package com.thatmg393.bettertpa4fabric.utils;
 
 import java.util.Timer;
 import java.util.TimerTask;

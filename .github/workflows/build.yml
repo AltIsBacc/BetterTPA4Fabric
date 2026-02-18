@@ -50,7 +50,7 @@ jobs:
       - name: Capture build artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: tpa4fabric-build
+          name: bettertpa4fabric-build
           path: build/libs/
 
       - name: Update CHANGELOG.md
@@ -70,8 +70,8 @@ jobs:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           github-token: ${{ secrets.GH_TOKEN }}
 
-          name: TPA4Fabric ${{ steps.build_bin.outputs.binver }}
-          files: build/libs/tpa4fabric-${{ steps.build_bin.outputs.binver }}.jar
+          name: BetterTPA4Fabric ${{ steps.build_bin.outputs.binver }}
+          files: build/libs/bettertpa4fabric-${{ steps.build_bin.outputs.binver }}.jar
           version-type: release
  
           github-generate-changelog: true

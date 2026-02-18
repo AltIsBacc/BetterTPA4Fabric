@@ -1,11 +1,11 @@
-package com.thatmg393.tpa4fabric.tpa.request;
+package com.thatmg393.bettertpa4fabric.tpa.request;
 
-import com.thatmg393.tpa4fabric.config.ModConfigManager;
-import com.thatmg393.tpa4fabric.tpa.request.base.BaseRequest;
-import com.thatmg393.tpa4fabric.tpa.request.callback.enums.TPAFailReason;
-import com.thatmg393.tpa4fabric.tpa.wrapper.TPAPlayerWrapper;
-import com.thatmg393.tpa4fabric.tpa.wrapper.models.Coordinates;
-import com.thatmg393.tpa4fabric.utils.CountdownTimer;
+import com.thatmg393.bettertpa4fabric.config.ModConfigManager;
+import com.thatmg393.bettertpa4fabric.tpa.request.base.BaseRequest;
+import com.thatmg393.bettertpa4fabric.tpa.request.callback.enums.TPAFailReason;
+import com.thatmg393.bettertpa4fabric.tpa.wrapper.TPAPlayerWrapper;
+import com.thatmg393.bettertpa4fabric.tpa.wrapper.models.Coordinates;
+import com.thatmg393.bettertpa4fabric.utils.CountdownTimer;
 
 public class TPAHereRequest extends BaseRequest {
     public TPAHereRequest(TPAPlayerWrapper requester, TPAPlayerWrapper receiver) {

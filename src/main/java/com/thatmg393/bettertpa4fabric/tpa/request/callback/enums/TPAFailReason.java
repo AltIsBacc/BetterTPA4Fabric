@@ -1,4 +1,4 @@
-package com.thatmg393.tpa4fabric.tpa.request.callback.enums;
+package com.thatmg393.bettertpa4fabric.tpa.request.callback.enums;
 
 public enum TPAFailReason {
     REQUESTER_MOVED,
