@@ -6,7 +6,12 @@ version = project.mod_version
 group = project.maven_group
 base.archivesName = project.archives_base_name
 
-repositories { }
+repositories {
+	maven {
+		name = 'Jitpack'
+		url = 'https://jitpack.io'
+	}
+}
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -38,4 +43,3 @@ jar {
 		rename { "${it}_${project.base.archivesName.get()}"}
 	}
 }
-

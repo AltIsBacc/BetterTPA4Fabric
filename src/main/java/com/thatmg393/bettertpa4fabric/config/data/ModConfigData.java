@@ -7,8 +7,7 @@ public class ModConfigData {
 
     public int tpaRequestLimit = 99;
 
-    public boolean defaultAllowTPARequests = true;
     public boolean oneTimeTPABack = true;
 
-    public int configVersion = 3; // internal value
+    public int configVersion = 4; // internal value
 }

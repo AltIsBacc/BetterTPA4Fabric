@@ -5,11 +5,12 @@
 	"name": "BetterTPA4Fabric",
 	"description": "Yet Another TPA mod for Fabric.",
 	"authors": [
-		"ThatMG393"
+		"ThatMG393",
+		"AltIsBacc"
 	],
 	"contact": {
-		"homepage": "https://github.com/ThatMG393/BetterTPA4Fabric",
-		"sources": "https://github.com/ThatMG393/BetterTPA4Fabric"
+		"homepage": "https://github.com/AltIsBacc/BetterTPA4Fabric",
+		"sources": "https://github.com/AltIsBacc/BetterTPA4Fabric"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/bettertpa4fabric/icon.png",
