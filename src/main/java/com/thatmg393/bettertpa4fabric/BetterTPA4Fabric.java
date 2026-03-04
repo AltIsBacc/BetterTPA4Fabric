@@ -17,7 +17,7 @@ import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
 
 public class BetterTPA4Fabric implements DedicatedServerModInitializer {
-	public static final String MOD_ID = "betterbettertpa4fabric";
+	public static final String MOD_ID = "bettertpa4fabric";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final ModConfigData CONFIG = ModConfigManager.loadOrGetConfig();
 
