@@ -22,8 +22,20 @@ public abstract class BaseRequest {
             TeleportManager.INSTANCE.getPlayerData(teleportingPlayer.getUuid()).isPlayerTeleporting = false;
             switch (res) {
                 case REQUESTER_MOVED -> {
-                    teleportingPlayer.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.cancelled.requester_moved"));
-                    target.ifLeft(t -> t.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.cancelled.requester_moved.receiver")));
+                    String key1 = "bettertpa4fabric.message.error.cancelled.requester_moved";
+                    String key2 = "bettertpa4fabric.message.error.cancelled.requester_moved.receiver";
+
+                    if (BetterTPA4Fabric.CONFIG.resetTimerOnMove) {
+                        TeleportManager.INSTANCE.getPlayerData(teleportingPlayer.getUuid()).isPlayerTeleporting = true;
+
+                        key1 = "bettertpa4fabric.message.error.reset.requester_moved";
+                        key2 = "bettertpa4fabric.message.error.reset.requester_moved.receiver";
+                    }
+
+                    teleportingPlayer.sendMessage(MCTextUtils.fromLang(key1));
+
+                    final String realKey2 = key2;
+                    target.ifLeft(t -> t.sendMessage(MCTextUtils.fromLang(realKey2)));
                 }
                 case REQUESTER_DIED -> {
                     teleportingPlayer.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.cancelled.requester_dead"));
@@ -67,6 +79,10 @@ public abstract class BaseRequest {
     }
 
     public Pair<String, String> getExpiredKeys() {
+        return Pair.of(null, null);
+    }
+
+    public Pair<String, String> getAcceptedKeys() {
         return Pair.of(null, null);
     }
 

@@ -21,7 +21,7 @@ Yet another TPA mod for Fabric.
 | tpaCooldown | 5s | Cooldown between TPA requests (**deprecated**) |
 | tpaRequestLimit | 99 | Max pending requests per player (**deprecated**) |
 | oneTimeTPABack | true | Whether /tpaback can only be used once per teleport (**NOT YET IMPLEMENTED**) |
-| resetTimerOnMove | false | Whether moving resets the teleport countdown (**NOT YET IMPLEMENTED**) |
+| resetTimerOnMove | false | Whether moving resets the teleport countdown |
 
 # To-do
 - [ ] `/tpacancel`

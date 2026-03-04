@@ -3,6 +3,7 @@ package com.thatmg393.bettertpa4fabric.tpa.tickable.task;
 import java.util.Optional;
 import java.util.function.Consumer;
 
+import com.thatmg393.bettertpa4fabric.BetterTPA4Fabric;
 import com.thatmg393.bettertpa4fabric.tpa.tickable.task.base.TickableTask;
 import com.thatmg393.bettertpa4fabric.utils.MCTextUtils;
 
@@ -54,9 +55,12 @@ public class TeleportTask extends TickableTask {
             return TickResult.CANCEL;
         }
 
-        if (!requester.getBlockPos().equals(startPos)) {
+        if (!(
+            requester.getBlockX() == startPos.getX() &&
+            requester.getBlockZ() == startPos.getZ()
+        )) {
             callback.accept(Result.REQUESTER_MOVED);
-            return TickResult.CANCEL;
+            return BetterTPA4Fabric.CONFIG.resetTimerOnMove ? TickResult.RESET : TickResult.CANCEL;
         }
 
         if (getTickDuration() % 20 == 0) {
