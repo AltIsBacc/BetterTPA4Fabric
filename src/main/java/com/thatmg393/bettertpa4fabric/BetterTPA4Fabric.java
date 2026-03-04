@@ -12,7 +12,6 @@ import com.thatmg393.bettertpa4fabric.tpa.TeleportManager;
 
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
@@ -33,8 +32,8 @@ public class BetterTPA4Fabric implements DedicatedServerModInitializer {
 		registerCommands();
 		LOGGER.info("Registered, have fun!");
 
-        ServerTickEvents.END_SERVER_TICK.register(server -> TeleportManager.INSTANCE.doTick());
-	}
+        TeleportManager.INSTANCE.init();
+    }
 
 	private void registerCommands() {
 		CommandRegistrationCallback.EVENT.register((dispatcher, registry, env) -> {
