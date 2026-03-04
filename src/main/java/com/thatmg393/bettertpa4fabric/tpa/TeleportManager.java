@@ -49,7 +49,18 @@ public class TeleportManager {
     }
 
     public int teleportTo(ServerPlayerEntity sender, ServerPlayerEntity receiver) {
+        if (sender.equals(receiver)) {
+            sender.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.tpa_to_self"));
+            return 0;
+        }
+
         PlayerData receiverData = getPlayerData(receiver.getUuid());
+
+        if (receiverData.teleportRequests.containsKey(sender.getUuid())) {
+            sender.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.existing_request"));
+            return 0;
+        }
+
         receiverData.teleportRequests.add(
             sender.getUuid(),
             new TPARequest(sender, receiver)
@@ -61,7 +72,18 @@ public class TeleportManager {
     }
 
     public int teleportHere(ServerPlayerEntity sender, ServerPlayerEntity receiver) {
+        if (sender.equals(receiver)) {
+            sender.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.tpa_to_self"));
+            return 0;
+        }
+
         PlayerData receiverData = getPlayerData(receiver.getUuid());
+
+        if (receiverData.teleportRequests.containsKey(sender.getUuid())) {
+            sender.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.existing_request"));
+            return 0;
+        }
+
         receiverData.teleportRequests.add(
             sender.getUuid(),
             new TPAHereRequest(sender, receiver)
