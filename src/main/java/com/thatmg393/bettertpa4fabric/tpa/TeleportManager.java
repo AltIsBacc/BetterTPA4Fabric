@@ -117,8 +117,12 @@ public class TeleportManager {
             return 0;
         }
 
-        accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa.accepted.receiver", from.getName().getString()));
-        from.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa.accepted.requester", accepter.getName().getString()));
+        Pair<String, String> acceptedMessages = request.getAcceptedKeys();
+        if (acceptedMessages.second() != null)
+            accepter.sendMessage(MCTextUtils.fromLang(acceptedMessages.second(), from.getName().getString()));
+
+        if (acceptedMessages.first() != null)
+            from.sendMessage(MCTextUtils.fromLang(acceptedMessages.first(), accepter.getName().getString()));
         
         tickableTasks.putTask(request.accept());
         return 1;
@@ -144,9 +148,10 @@ public class TeleportManager {
         }
 
         Pair<String, String> deniedMessages = request.getDeniedKeys();
-        if (deniedMessages.first() != null)
-            denier.sendMessage(MCTextUtils.fromLang(deniedMessages.second(), from.getName().getString()));
         if (deniedMessages.second() != null)
+            denier.sendMessage(MCTextUtils.fromLang(deniedMessages.second(), from.getName().getString()));
+
+        if (deniedMessages.first() != null)
             from.sendMessage(MCTextUtils.fromLang(deniedMessages.first(), denier.getName().getString()));
         return 1;
     }

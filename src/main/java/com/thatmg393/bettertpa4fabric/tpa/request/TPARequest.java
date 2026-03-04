@@ -33,6 +33,14 @@ public class TPARequest extends BaseRequest {
     }
 
     @Override
+    public Pair<String, String> getAcceptedKeys() {
+        return Pair.of(
+            "bettertpa4fabric.message.tpa.accepted.requester",
+            "bettertpa4fabric.message.tpa.accepted.receiver"
+        );
+    }
+
+    @Override
     public Pair<String, String> getDeniedKeys() {
         return Pair.of(
             "bettertpa4fabric.message.tpa.denied.requester",
