@@ -1,8 +1,6 @@
 package com.thatmg393.bettertpa4fabric.tpa;
 
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -17,6 +15,7 @@ import com.thatmg393.bettertpa4fabric.tpa.tickable.task.base.TickableTask;
 import com.thatmg393.bettertpa4fabric.utils.MCTextUtils;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+import it.unimi.dsi.fastutil.objects.ObjectCollection;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
@@ -124,7 +123,7 @@ public class TeleportManager {
         return playerDatas.computeIfAbsent(key, k -> new PlayerData());
     }
 
-    public Stream<Map.Entry<UUID, PlayerData>> streamPlayerDatas() {
-        return playerDatas.entrySet().stream();
+    public ObjectCollection<PlayerData> getPlayerDatas() {
+        return playerDatas.values();
     }
 }
