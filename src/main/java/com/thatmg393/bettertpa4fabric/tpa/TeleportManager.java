@@ -14,6 +14,7 @@ import com.thatmg393.bettertpa4fabric.tpa.tickable.task.StaleRequestsCleanerTask
 import com.thatmg393.bettertpa4fabric.tpa.tickable.task.base.TickableTask;
 import com.thatmg393.bettertpa4fabric.utils.MCTextUtils;
 
+import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectCollection;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
@@ -100,6 +101,33 @@ public class TeleportManager {
         return 1;
     }
 
+    public int denyTeleport(ServerPlayerEntity denier, @Nullable ServerPlayerEntity from) {
+        PlayerData denierData = getPlayerData(denier.getUuid());
+        BaseRequest request;
+
+        if (from == null) {
+            request = denierData.teleportRequests.consume();
+            if (request == null) {
+                denier.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
+                return 0;
+            }
+            from = request.getRequester();
+        } else {
+            request = denierData.teleportRequests.consumeByKey(from.getUuid());
+            if (request == null) {
+                denier.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_request_from_player", from.getName().getString()));
+                return 0;
+            }
+        }
+
+        Pair<String, String> deniedMessages = request.getDeniedKeys();
+        if (deniedMessages.first() != null)
+            denier.sendMessage(MCTextUtils.fromLang(deniedMessages.second(), from.getName().getString()));
+        if (deniedMessages.second() != null)
+            from.sendMessage(MCTextUtils.fromLang(deniedMessages.first(), denier.getName().getString()));
+        return 1;
+    }
+
     public void doTeleport(
         ServerPlayerEntity player,
         ServerWorld world,
@@ -108,11 +136,12 @@ public class TeleportManager {
         world.getServer().execute(() -> {
             // this is version sensitive!
             player.teleport(
-                    world,
-                    position.getX(), position.getY(), position.getZ(),
-                    PositionFlag.DELTA,
-                    player.getYaw(), player.getPitch(),
-                    false);
+                world,
+                position.getX(), position.getY(), position.getZ(),
+                PositionFlag.DELTA,
+                player.getYaw(), player.getPitch(),
+                false
+            );
         });
     }
 

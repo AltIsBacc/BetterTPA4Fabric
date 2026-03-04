@@ -6,7 +6,7 @@ A simple TPA mod for Fabric.
 - [x] tpahere {target}
 - [x] tpaback
 - [x] tpaaccept [from]
-- [ ] tpadeny [from]
+- [x] tpadeny [from]
 - [ ] tpacancel [to]
 - [ ] tpaallow [true|false]
 - [ ] tpaconfig {key} {value}

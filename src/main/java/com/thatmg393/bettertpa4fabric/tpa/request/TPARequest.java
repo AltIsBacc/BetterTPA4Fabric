@@ -31,4 +31,12 @@ public class TPARequest extends BaseRequest {
             "bettertpa4fabric.message.tpa.expired.receiver"
         );
     }
+
+    @Override
+    public Pair<String, String> getDeniedKeys() {
+        return Pair.of(
+            "bettertpa4fabric.message.tpa.denied.requester",
+            "bettertpa4fabric.message.tpa.denied.receiver"
+        );
+    }
 }

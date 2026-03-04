@@ -42,7 +42,7 @@ public class BetterTPA4Fabric implements DedicatedServerModInitializer {
 				.requires(ServerCommandSource::isExecutedByPlayer)
 				.then(
 					argument("to", EntityArgumentType.player())
-				    .executes(ctx -> TeleportManager.INSTANCE.teleportTo(ctx.getSource().getPlayer(), EntityArgumentType.getPlayer(ctx, "to")))				)
+                    .executes(ctx -> TeleportManager.INSTANCE.teleportTo(ctx.getSource().getPlayer(), EntityArgumentType.getPlayer(ctx, "to")))				)
 			);
 
             dispatcher.register(
@@ -65,22 +65,22 @@ public class BetterTPA4Fabric implements DedicatedServerModInitializer {
 				.requires(ServerCommandSource::isExecutedByPlayer)
 				.then(
 					argument("from", EntityArgumentType.player())
-				    .executes(ctx -> TeleportManager.INSTANCE.acceptTeleport(ctx.getSource().getPlayer(), EntityArgumentType.getPlayer(ctx, "from")))
+                    .executes(ctx -> TeleportManager.INSTANCE.acceptTeleport(ctx.getSource().getPlayer(), EntityArgumentType.getPlayer(ctx, "from")))
 				)
 				.executes(ctx -> TeleportManager.INSTANCE.acceptTeleport(ctx.getSource().getPlayer(), null))
 			);
 
-            /*
 			dispatcher.register(
 				literal("tpadeny")
 				.requires(ServerCommandSource::isExecutedByPlayer)
 				.then(
 					argument("from", EntityArgumentType.player())
-					.executes(ctx -> TPAManager.getInstance().tpadeny(ctx.getSource().getPlayer(), EntityArgumentType.getPlayer(ctx, "from")))
+					.executes(ctx -> TeleportManager.INSTANCE.denyTeleport(ctx.getSource().getPlayer(), EntityArgumentType.getPlayer(ctx, "from")))
 				)
-				.executes(ctx -> TPAManager.getInstance().tpadeny(ctx.getSource().getPlayer(), null))
+				.executes(ctx -> TeleportManager.INSTANCE.denyTeleport(ctx.getSource().getPlayer(), null))
 			);
 
+            /*
 			dispatcher.register(
 				literal("tpaallow")
 				.requires(ServerCommandSource::isExecutedByPlayer)

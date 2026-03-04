@@ -28,11 +28,6 @@ public class TPABackRequest extends BaseRequest {
     }
 
     @Override
-    public Pair<String, String> getExpiredKeys() {
-        return Pair.of(null, null);
-    }
-
-    @Override
     public boolean isExpired() {
         return false;
     }

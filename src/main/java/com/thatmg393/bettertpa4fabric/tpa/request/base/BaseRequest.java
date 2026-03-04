@@ -66,6 +66,13 @@ public abstract class BaseRequest {
         return System.currentTimeMillis() > createdAt + (BetterTPA4Fabric.CONFIG.tpaExpireTime * 1000);
     }
 
+    public Pair<String, String> getExpiredKeys() {
+        return Pair.of(null, null);
+    }
+
+    public Pair<String, String> getDeniedKeys() {
+        return Pair.of(null, null);
+    }
+
     public abstract TeleportTask accept();
-    public abstract Pair<String, String> getExpiredKeys();
 }
