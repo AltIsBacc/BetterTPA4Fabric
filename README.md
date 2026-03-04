@@ -1,5 +1,5 @@
 # BetterTPA4Fabric
-A simple TPA mod for Fabric.
+Yet another TPA mod for Fabric.
 
 # Commands
 - [x] tpa {to}
@@ -11,10 +11,21 @@ A simple TPA mod for Fabric.
 - [ ] tpaallow [true|false]
 - [ ] tpaconfig {key} {value}
 
-> { } is required and [ ] is optional (or in specific cases)
+> { } is required, [ ] is optional
 
-# To-do list 
-- [x] `/tpahere`
-- [ ] `/tpaconfig` or runtime configs.
-- [ ] Formatted messages.
+# Config
+| Key | Default | Description |
+|-----|---------|-------------|
+| tpaExpireTime | 120s | How long before a request expires |
+| tpaTeleportTime | 5s | Countdown before teleporting |
+| tpaCooldown | 5s | Cooldown between TPA requests (**deprecated**) |
+| tpaRequestLimit | 99 | Max pending requests per player (**deprecated**) |
+| oneTimeTPABack | true | Whether /tpaback can only be used once per teleport (**NOT YET IMPLEMENTED**) |
+| resetTimerOnMove | false | Whether moving resets the teleport countdown (**NOT YET IMPLEMENTED**) |
+
+# To-do
+- [ ] `/tpacancel`
+- [ ] `/tpaallow`
+- [ ] `/tpaconfig` / runtime config modification
+- [ ] Formatted messages
 - [ ] Teleport effects
