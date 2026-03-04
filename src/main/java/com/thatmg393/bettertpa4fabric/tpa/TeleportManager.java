@@ -73,23 +73,21 @@ public class TeleportManager {
             BaseRequest request = requesterData.teleportRequests.consume();
             if (request == null) {
                 // requester: no received teleport request
-
                 return 0;
             }
 
             teleportTasks.putTask(request.accept());
-        }
-
-        if (requesterData.teleportRequests.containsKey(target.getUuid())) {
-            teleportTasks.putTask(
-                requesterData.teleportRequests.consumeByKey(
-                    target.getUuid()
-                ).accept()
-            );
         } else {
-            // requester: no teleport request from target
-
-            return 0;
+            if (requesterData.teleportRequests.containsKey(target.getUuid())) {
+                teleportTasks.putTask(
+                    requesterData.teleportRequests.consumeByKey(
+                        target.getUuid()
+                    ).accept()
+                );
+            } else {
+                // requester: no teleport request from target
+                return 0;
+            }
         }
 
         return 1;
