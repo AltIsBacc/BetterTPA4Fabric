@@ -79,6 +79,11 @@ public class TeleportManager {
         PlayerData accepterData = getPlayerData(accepter.getUuid());
         BaseRequest request;
 
+        if (accepterData.isPlayerTeleporting) {
+            accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.requester_is_teleporting"));
+            return 0;
+        }
+
         if (from == null) {
             request = accepterData.teleportRequests.consume();
             if (request == null) {
@@ -94,10 +99,17 @@ public class TeleportManager {
             }
         }
 
+        if (getPlayerData(from.getUuid()).isPlayerTeleporting) {
+            accepterData.teleportRequests.insertInFront(from.getUuid(), request); // might be wrong?
+            
+            accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.receiver_is_teleporting"));
+            return 0;
+        }
+
         accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa.accepted.receiver", from.getName().getString()));
         from.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa.accepted.requester", accepter.getName().getString()));
+        
         tickableTasks.putTask(request.accept());
-
         return 1;
     }
 
