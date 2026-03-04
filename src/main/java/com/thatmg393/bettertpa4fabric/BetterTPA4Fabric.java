@@ -50,7 +50,7 @@ public class BetterTPA4Fabric implements DedicatedServerModInitializer {
 				.requires(ServerCommandSource::isExecutedByPlayer)
 				.then(
 					argument("player", EntityArgumentType.player())
-					.executes(ctx ->  TeleportManager.INSTANCE.teleportHere(ctx.getSource().getPlayer(), EntityArgumentType.getPlayer(ctx, "to")))
+					.executes(ctx ->  TeleportManager.INSTANCE.teleportHere(ctx.getSource().getPlayer(), EntityArgumentType.getPlayer(ctx, "player")))
 				)
 			);
 
