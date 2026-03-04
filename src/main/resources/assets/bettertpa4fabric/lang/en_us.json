@@ -13,6 +13,7 @@
     "bettertpa4fabric.message.tpa.expired.receiver": "{}'s TPA request has expired.",
 
     "bettertpa4fabric.message.tpahere.sent": "You sent a TPA here request to {}.",
+    "bettertpa4fabric.message.tpahere.received": "{} wants you to teleport to them.",
     "bettertpa4fabric.message.tpahere.accepted.requester": "{} accepted your TPA here request.",
     "bettertpa4fabric.message.tpahere.accepted.receiver": "You accepted {}'s TPA here request.",
     "bettertpa4fabric.message.tpahere.denied.requester": "{} denied your TPA here request.",

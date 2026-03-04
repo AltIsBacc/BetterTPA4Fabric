@@ -32,41 +32,41 @@ public class TeleportManager {
         ServerPlayerEvents.LEAVE.register(player -> playerDatas.remove(player.getUuid()));
     }
 
-    public int teleportTo(ServerPlayerEntity requester, ServerPlayerEntity target) {
-        PlayerData targetData = getPlayerData(target.getUuid());
-        targetData.teleportRequests.add(
-            requester.getUuid(),
-            new TPARequest(requester, target)
+    public int teleportTo(ServerPlayerEntity sender, ServerPlayerEntity receiver) {
+        PlayerData receiverData = getPlayerData(receiver.getUuid());
+        receiverData.teleportRequests.add(
+            sender.getUuid(),
+            new TPARequest(sender, receiver)
         );
 
+        sender.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa.sent", receiver.getName().getString()));
+        receiver.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa.received", sender.getName().getString()));
         return 1;
     }
 
-    public int teleportHere(ServerPlayerEntity requester, ServerPlayerEntity target) {
-        PlayerData targetData = getPlayerData(target.getUuid());
-        targetData.teleportRequests.add(
-            requester.getUuid(),
-            new TPAHereRequest(requester, target)
+    public int teleportHere(ServerPlayerEntity sender, ServerPlayerEntity receiver) {
+        PlayerData receiverData = getPlayerData(receiver.getUuid());
+        receiverData.teleportRequests.add(
+            sender.getUuid(),
+            new TPAHereRequest(sender, receiver)
         );
 
+        sender.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpahere.sent", receiver.getName().getString()));
+        receiver.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpahere.received", sender.getName().getString()));
         return 1;
     }
 
-    public int teleportBack(ServerPlayerEntity requester) {
-        PlayerData requesterData = getPlayerData(requester.getUuid());
+    public int teleportBack(ServerPlayerEntity player) {
+        PlayerData playerData = getPlayerData(player.getUuid());
 
-        if (requesterData.previousTeleportPosition == null) {
-            // requester: no previous position to teleport to
+        if (playerData.previousTeleportPosition == null) {
+            player.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_back_location"));
             return 0;
         }
 
         teleportTasks.putTask(
-            new TPABackRequest(
-                requester,
-                requesterData.previousTeleportPosition
-            ).accept()
+            new TPABackRequest(player, playerData.previousTeleportPosition).accept()
         );
-
         return 1;
     }
 
@@ -92,7 +92,7 @@ public class TeleportManager {
         accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa.accepted.receiver", from.getName().getString()));
         from.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa.accepted.requester", accepter.getName().getString()));
         teleportTasks.putTask(request.accept());
-        
+
         return 1;
     }
 
