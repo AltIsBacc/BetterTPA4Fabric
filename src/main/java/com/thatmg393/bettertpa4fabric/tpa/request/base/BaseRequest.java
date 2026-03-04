@@ -67,4 +67,5 @@ public abstract class BaseRequest {
     }
 
     public abstract TeleportTask accept();
+    public abstract Pair<String, String> getExpiredKeys();
 }

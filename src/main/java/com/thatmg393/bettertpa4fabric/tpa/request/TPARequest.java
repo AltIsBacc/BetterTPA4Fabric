@@ -6,6 +6,7 @@ import com.thatmg393.bettertpa4fabric.tpa.request.base.BaseRequest;
 import com.thatmg393.bettertpa4fabric.tpa.tickable.task.TeleportTask;
 import com.thatmg393.bettertpa4fabric.utils.Either;
 
+import it.unimi.dsi.fastutil.Pair;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 public class TPARequest extends BaseRequest {
@@ -20,6 +21,14 @@ public class TPARequest extends BaseRequest {
             getRequester(), getTarget().getLeft(),
             BetterTPA4Fabric.CONFIG.tpaTeleportTime * 20,
             buildCallback(getRequester(), getTarget())
+        );
+    }
+
+    @Override
+    public Pair<String, String> getExpiredKeys() {
+        return Pair.of(
+            "bettertpa4fabric.message.tpa.expired.requester",
+            "bettertpa4fabric.message.tpa.expired.receiver"
         );
     }
 }

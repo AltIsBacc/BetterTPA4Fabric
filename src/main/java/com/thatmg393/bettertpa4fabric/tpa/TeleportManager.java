@@ -1,6 +1,8 @@
 package com.thatmg393.bettertpa4fabric.tpa;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -10,7 +12,8 @@ import com.thatmg393.bettertpa4fabric.tpa.request.TPAHereRequest;
 import com.thatmg393.bettertpa4fabric.tpa.request.TPARequest;
 import com.thatmg393.bettertpa4fabric.tpa.request.base.BaseRequest;
 import com.thatmg393.bettertpa4fabric.tpa.tickable.TickableTaskProcessor;
-import com.thatmg393.bettertpa4fabric.tpa.tickable.task.TeleportTask;
+import com.thatmg393.bettertpa4fabric.tpa.tickable.task.StaleRequestsCleanerTask;
+import com.thatmg393.bettertpa4fabric.tpa.tickable.task.base.TickableTask;
 import com.thatmg393.bettertpa4fabric.utils.MCTextUtils;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -25,11 +28,13 @@ public class TeleportManager {
     public static final TeleportManager INSTANCE = new TeleportManager();
 
     private final Object2ObjectOpenHashMap<UUID, PlayerData> playerDatas = new Object2ObjectOpenHashMap<>();
-    private final TickableTaskProcessor<TeleportTask> teleportTasks = new TickableTaskProcessor<>();
+    private final TickableTaskProcessor<TickableTask> tickableTasks = new TickableTaskProcessor<>();
 
     public void init() {
         ServerTickEvents.END_SERVER_TICK.register(server -> doTick());
         ServerPlayerEvents.LEAVE.register(player -> playerDatas.remove(player.getUuid()));
+
+        tickableTasks.putTask(new StaleRequestsCleanerTask());
     }
 
     public int teleportTo(ServerPlayerEntity sender, ServerPlayerEntity receiver) {
@@ -64,7 +69,7 @@ public class TeleportManager {
             return 0;
         }
 
-        teleportTasks.putTask(
+        tickableTasks.putTask(
             new TPABackRequest(player, playerData.previousTeleportPosition).accept()
         );
         return 1;
@@ -84,14 +89,14 @@ public class TeleportManager {
         } else {
             request = accepterData.teleportRequests.consumeByKey(from.getUuid());
             if (request == null) {
-                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_request_from_player.accept", from.getName().getString()));
+                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_request_from_player", from.getName().getString()));
                 return 0;
             }
         }
 
         accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa.accepted.receiver", from.getName().getString()));
         from.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa.accepted.requester", accepter.getName().getString()));
-        teleportTasks.putTask(request.accept());
+        tickableTasks.putTask(request.accept());
 
         return 1;
     }
@@ -112,10 +117,14 @@ public class TeleportManager {
     }
 
     public void doTick() {
-        teleportTasks.doTick();
+        tickableTasks.doTick();
     }
 
     public PlayerData getPlayerData(UUID key) {
         return playerDatas.computeIfAbsent(key, k -> new PlayerData());
+    }
+
+    public Stream<Map.Entry<UUID, PlayerData>> streamPlayerDatas() {
+        return playerDatas.entrySet().stream();
     }
 }
