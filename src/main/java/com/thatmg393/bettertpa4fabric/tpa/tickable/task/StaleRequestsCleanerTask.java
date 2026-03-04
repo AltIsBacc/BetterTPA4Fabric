@@ -10,12 +10,18 @@ import it.unimi.dsi.fastutil.Pair;
 public class StaleRequestsCleanerTask extends TickableTask {
 
     public StaleRequestsCleanerTask() {
-        super(20);
+        super(19);
     }
 
     @Override
     protected TickResult onTick() {
+        return TickResult.REPEAT;
+    }
+
+    @Override
+    protected void onFinish() {
         for (PlayerData data : TeleportManager.INSTANCE.getPlayerDatas()) {
+            if (data.teleportRequests.isEmpty()) continue;
             data.teleportRequests.values().removeIf(request -> {
                 if (!request.isExpired()) return false;
 
@@ -39,12 +45,5 @@ public class StaleRequestsCleanerTask extends TickableTask {
                 return true;
             });
         }
-
-        return TickResult.RESET;
-    }
-
-    @Override
-    protected void onFinish() {
-        throw new IllegalStateException("onFinish should never be called inside StaleRequestsCleanerTask");
     }
 }

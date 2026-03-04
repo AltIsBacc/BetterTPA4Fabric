@@ -2,7 +2,7 @@ package com.thatmg393.bettertpa4fabric.tpa.tickable.task.base;
 
 public abstract class TickableTask {
     protected enum TickResult {
-        CONTINUE, PAUSE, CANCEL, RESET
+        CONTINUE, PAUSE, CANCEL, RESET, REPEAT
     }
 
     private final long initialTickDuration;
@@ -40,6 +40,16 @@ public abstract class TickableTask {
 
                 yield true;
             }
+
+            case REPEAT -> {
+                if (tickDuration > 0) tickDuration--;
+                if (tickDuration == 0) {
+                    onFinish();
+                    tickDuration = initialTickDuration;
+                }
+
+                yield true;
+            }
         };
     }
 
@@ -53,6 +63,6 @@ public abstract class TickableTask {
 
     protected void onFirstTick() { }
 
-    protected abstract TickResult onTick();
+    protected abstract TickResult onTick(); 
     protected abstract void onFinish();
 }
