@@ -40,6 +40,9 @@ jobs:
       - name: Make gradle wrapper executable
         run: chmod +x ./gradlew
 
+      - name: Download Minecraft assets
+        run: ./gradlew downloadAssets
+
       - name: Run unit tests
         run: ./gradlew test
 
