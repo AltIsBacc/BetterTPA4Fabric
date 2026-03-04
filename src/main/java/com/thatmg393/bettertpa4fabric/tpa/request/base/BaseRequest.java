@@ -14,7 +14,10 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 
 public abstract class BaseRequest {
-    public static Consumer<TeleportTask.Result> buildCallback(ServerPlayerEntity teleportingPlayer, Either<ServerPlayerEntity, Pair<ServerWorld, BlockPos>> target) {
+    public static Consumer<TeleportTask.Result> buildCallback(
+        ServerPlayerEntity teleportingPlayer,
+        Either<ServerPlayerEntity, Pair<ServerWorld, BlockPos>> target
+    ) {
         return res -> {
             TeleportManager.INSTANCE.getPlayerData(teleportingPlayer.getUuid()).isPlayerTeleporting = false;
             switch (res) {
