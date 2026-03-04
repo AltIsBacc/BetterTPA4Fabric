@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
 
+import com.thatmg393.bettertpa4fabric.BetterTPA4Fabric;
 import com.thatmg393.bettertpa4fabric.tpa.data.PlayerData;
 import com.thatmg393.bettertpa4fabric.tpa.request.TPABackRequest;
 import com.thatmg393.bettertpa4fabric.tpa.request.TPAHereRequest;
@@ -20,12 +21,22 @@ import it.unimi.dsi.fastutil.objects.ObjectCollection;
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ChunkTicketType;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
 public class TeleportManager {
     public static final TeleportManager INSTANCE = new TeleportManager();
+
+    private static final ChunkTicketType TPA = (ChunkTicketType) Registry.register(
+        Registries.TICKET_TYPE,
+        Identifier.of(BetterTPA4Fabric.MOD_ID, "tpa"),
+        new ChunkTicketType(20L, ChunkTicketType.FOR_LOADING)
+    );
 
     private final Object2ObjectOpenHashMap<UUID, PlayerData> playerDatas = new Object2ObjectOpenHashMap<>();
     private final TickableTaskProcessor<TickableTask> tickableTasks = new TickableTaskProcessor<>();
@@ -147,6 +158,10 @@ public class TeleportManager {
     ) {
         world.getServer().execute(() -> {
             // this is version sensitive!
+            player.getEntityWorld().getChunkManager().addChunkLoadingTicket(
+                TPA, player.getChunkPos(), 3
+            );
+
             player.teleport(
                 world,
                 position.getX(), position.getY(), position.getZ(),
