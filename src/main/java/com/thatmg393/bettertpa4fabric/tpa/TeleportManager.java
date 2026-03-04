@@ -30,7 +30,7 @@ public class TeleportManager {
     private final TickableTaskProcessor<TickableTask> tickableTasks = new TickableTaskProcessor<>();
 
     public void init() {
-        ServerTickEvents.END_SERVER_TICK.register(server -> doTick());
+        ServerTickEvents.END_SERVER_TICK.register(server -> tickableTasks.doTick());
         ServerPlayerEvents.LEAVE.register(player -> playerDatas.remove(player.getUuid()));
 
         tickableTasks.putTask(new StaleRequestsCleanerTask());
@@ -101,9 +101,10 @@ public class TeleportManager {
     }
 
     public void doTeleport(
-            ServerPlayerEntity player,
-            ServerWorld world,
-            BlockPos position) {
+        ServerPlayerEntity player,
+        ServerWorld world,
+        BlockPos position
+    ) {
         world.getServer().execute(() -> {
             // this is version sensitive!
             player.teleport(
@@ -113,10 +114,6 @@ public class TeleportManager {
                     player.getYaw(), player.getPitch(),
                     false);
         });
-    }
-
-    public void doTick() {
-        tickableTasks.doTick();
     }
 
     public PlayerData getPlayerData(UUID key) {
