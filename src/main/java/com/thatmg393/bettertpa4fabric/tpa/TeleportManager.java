@@ -117,25 +117,32 @@ public class TeleportManager {
 
         BaseRequest request;
         if (from == null) {
-            request = accepterData.teleportRequests.consume();
+            request = accepterData.teleportRequests.firstEntry().getValue();
             if (request == null) {
                 accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
                 return 0;
             }
+
             from = request.getRequester();
+            if (getPlayerData(from.getUuid()).isPlayerTeleporting) {
+                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.receiver_is_teleporting"));
+                return 0;
+            }
+
+            accepterData.teleportRequests.consume();
         } else {
-            request = accepterData.teleportRequests.consumeByKey(from.getUuid());
+            if (getPlayerData(from.getUuid()).isPlayerTeleporting) {
+                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.receiver_is_teleporting"));
+                return 0;
+            }
+            
+            request = accepterData.teleportRequests.findByKey(from.getUuid());
             if (request == null) {
                 accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_request_from_player", from.getName().getString()));
                 return 0;
             }
-        }
 
-        if (getPlayerData(from.getUuid()).isPlayerTeleporting) {
-            accepterData.teleportRequests.insertInFront(from.getUuid(), request); // might be wrong?
-            
-            accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.receiver_is_teleporting"));
-            return 0;
+            accepterData.teleportRequests.consumeByKey(from.getUuid());
         }
 
         Pair<String, String> acceptedMessages = request.getAcceptedKeys();

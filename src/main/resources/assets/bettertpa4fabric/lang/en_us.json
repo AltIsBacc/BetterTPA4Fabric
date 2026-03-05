@@ -33,13 +33,12 @@
     "bettertpa4fabric.message.error.no_incoming_requests": "You have no incoming TPA requests.",
     "bettertpa4fabric.message.error.no_request_from_player": "You have no TPA request from {}.",
     
-    "bettertpa4fabric.message.error.requester_is_teleporting": "You are already teleporting!",
+    "bettertpa4fabric.message.error.requester_is_teleporting": "You are currently teleporting, you cannot accept any TPA request!",
     "bettertpa4fabric.message.error.receiver_is_teleporting": "The target player is teleporting somewhere else!",
     
     "bettertpa4fabric.message.error.reset.requester_moved": "You moved! Countdown has been reset...",
     "bettertpa4fabric.message.error.reset.requester_moved.receiver": "The other player moved. Their countdown has been reset...",
     
-
     "bettertpa4fabric.message.error.cancelled.requester_moved": "You moved! Teleport cancelled.",
     "bettertpa4fabric.message.error.cancelled.requester_moved.receiver": "The other player moved. Teleport cancelled.",
     "bettertpa4fabric.message.error.cancelled.requester_dead": "You died. Teleport cancelled.",
