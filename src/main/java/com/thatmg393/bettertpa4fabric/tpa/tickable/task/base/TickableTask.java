@@ -28,6 +28,7 @@ public abstract class TickableTask {
 
             case RESET -> {
                 tickDuration = initialTickDuration;
+                firstTick = true;
                 yield true;
             }
 
@@ -46,6 +47,7 @@ public abstract class TickableTask {
                 if (tickDuration == 0) {
                     onFinish();
                     tickDuration = initialTickDuration;
+                    firstTick = true;
                 }
 
                 yield true;
