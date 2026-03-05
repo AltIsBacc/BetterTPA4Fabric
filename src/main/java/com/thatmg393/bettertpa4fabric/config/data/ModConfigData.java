@@ -7,7 +7,7 @@ public class ModConfigData {
 
     public int tpaRequestLimit = 99;
 
-    public boolean oneTimeTPABack = true;
+    public boolean oneTimeTPABack = false;
     public boolean resetTimerOnMove = false;
 
     public int configVersion = 5; // internal value

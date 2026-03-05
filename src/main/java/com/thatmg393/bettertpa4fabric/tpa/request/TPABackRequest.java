@@ -23,7 +23,12 @@ public class TPABackRequest extends BaseRequest {
         return new TeleportTask(
             getRequester(), getTarget().getLeft(),
             BetterTPA4Fabric.CONFIG.tpaTeleportTime * 20,
-            buildCallback(getRequester(), getTarget())
+            res -> {
+                buildCallback(getRequester(), getTarget()).accept(res);
+                if (res == TeleportTask.Result.SUCCESS && BetterTPA4Fabric.CONFIG.oneTimeTPABack) {
+                    TeleportManager.INSTANCE.getPlayerData(getRequester().getUuid()).previousTeleportPosition = null;
+                }
+            }
         );
     }
 
