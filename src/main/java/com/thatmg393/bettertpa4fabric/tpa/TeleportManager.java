@@ -110,13 +110,12 @@ public class TeleportManager {
 
     public int acceptTeleport(ServerPlayerEntity accepter, @Nullable ServerPlayerEntity from) {
         PlayerData accepterData = getPlayerData(accepter.getUuid());
-        BaseRequest request;
-
         if (accepterData.isPlayerTeleporting) {
             accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.requester_is_teleporting"));
             return 0;
         }
 
+        BaseRequest request;
         if (from == null) {
             request = accepterData.teleportRequests.consume();
             if (request == null) {
