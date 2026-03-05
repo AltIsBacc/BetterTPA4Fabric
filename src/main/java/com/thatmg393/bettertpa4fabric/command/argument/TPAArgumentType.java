@@ -59,9 +59,10 @@ public class TPAArgumentType implements ArgumentType<String> {
         switch (mode) {
             case INCOMING_REQUESTS -> {
                 PlayerData data = TeleportManager.INSTANCE.getPlayerData(self.getUuid());
-                data.teleportRequests.keySet().stream()
-                    .map(uuid -> source.getServer().getPlayerManager().getPlayer(uuid))
-                    .filter(p -> p != null)
+                data.teleportRequests.entrySet().stream()
+                    .filter(e -> !e.getValue().isExpired())
+                    .map(e -> e.getValue().getRequester())
+                    .filter(p -> p.networkHandler.isConnectionOpen())
                     .map(ServerPlayerEntity::getNameForScoreboard)
                     .filter(name -> name.startsWith(builder.getRemaining()))
                     .forEach(builder::suggest);
