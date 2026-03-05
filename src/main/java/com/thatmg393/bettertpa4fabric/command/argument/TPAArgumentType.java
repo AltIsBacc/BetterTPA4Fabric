@@ -2,8 +2,6 @@ package com.thatmg393.bettertpa4fabric.command.argument;
 
 import java.util.concurrent.CompletableFuture;
 
-import com.mojang.brigadier.StringReader;
-import com.mojang.brigadier.arguments.ArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType;
@@ -16,7 +14,7 @@ import com.thatmg393.bettertpa4fabric.utils.MCTextUtils;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-public class TPAArgumentType implements ArgumentType<String> {
+public class TPAArgumentType {
 
     public enum Mode {
         /** Suggests players who have sent YOU a request (for tpaaccept/tpadeny) */
@@ -25,26 +23,15 @@ public class TPAArgumentType implements ArgumentType<String> {
         ALLOWED_PLAYERS
     }
 
+    public static final TPAArgumentType INCOMING_REQUESTS = new TPAArgumentType(Mode.INCOMING_REQUESTS);
+    public static final TPAArgumentType ALLOWED_PLAYERS = new TPAArgumentType(Mode.INCOMING_REQUESTS);
+
     private final Mode mode;
 
     private TPAArgumentType(Mode mode) {
         this.mode = mode;
     }
 
-    public static TPAArgumentType incomingRequests() {
-        return new TPAArgumentType(Mode.INCOMING_REQUESTS);
-    }
-
-    public static TPAArgumentType allowedPlayers() {
-        return new TPAArgumentType(Mode.ALLOWED_PLAYERS);
-    }
-
-    @Override
-    public String parse(StringReader reader) throws CommandSyntaxException {
-        return reader.readString();
-    }
-
-    @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(
         CommandContext<S> context,
         SuggestionsBuilder builder
@@ -87,10 +74,9 @@ public class TPAArgumentType implements ArgumentType<String> {
      * Call this in your command method to resolve the string arg back to a player.
      * Throws a user-visible error if the player is offline.
      */
-    public static ServerPlayerEntity resolve(
+    public ServerPlayerEntity resolve(
         CommandContext<ServerCommandSource> ctx,
-        String argName,
-        Mode mode
+        String argName
     ) throws CommandSyntaxException {
         String name = ctx.getArgument(argName, String.class);
         ServerPlayerEntity player = ctx.getSource().getServer().getPlayerManager().getPlayer(name);
