@@ -24,6 +24,7 @@ public class StaleRequestsCleanerTask extends TickableTask {
             if (data.teleportRequests.isEmpty()) continue;
             data.teleportRequests.values().removeIf(request -> {
                 if (!request.isExpired()) return false;
+                if (request.getRequester().getEntityWorld().getServer().getPlayerManager().getPlayer(request.getRequester().getUuid()) == null) return true;
 
                 Pair<String, String> expiredMessages = request.getExpiredKeys();
                 if (expiredMessages.first() != null) {
