@@ -1,6 +1,8 @@
 package com.thatmg393.bettertpa4fabric.tpa;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -43,6 +45,8 @@ public class TeleportManager {
 
     public void init() {
         ServerTickEvents.END_SERVER_TICK.register(server -> tickableTasks.doTick());
+
+        ServerPlayerEvents.JOIN.register(player -> playerDatas.put(player.getUuid(), new PlayerData()));
         ServerPlayerEvents.LEAVE.register(player -> playerDatas.remove(player.getUuid()));
 
         tickableTasks.putTask(new StaleRequestsCleanerTask());
@@ -219,6 +223,10 @@ public class TeleportManager {
 
     public PlayerData getPlayerData(UUID key) {
         return playerDatas.computeIfAbsent(key, k -> new PlayerData());
+    }
+
+    public Stream<Map.Entry<UUID, PlayerData>> streamPlayerDatas() {
+        return playerDatas.entrySet().stream();
     }
 
     public ObjectCollection<PlayerData> getPlayerDatas() {

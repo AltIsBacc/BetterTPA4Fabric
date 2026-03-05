@@ -29,6 +29,12 @@ processResources {
 	}
 }
 
+jar {
+	from("LICENSE") {
+		rename { "${it}_${project.base.archivesName.get()}"}
+	}
+}
+
 tasks.withType(JavaCompile).configureEach {
 	it.options.release = 21
 }
@@ -36,10 +42,4 @@ tasks.withType(JavaCompile).configureEach {
 java {
 	sourceCompatibility = JavaVersion.VERSION_21
 	targetCompatibility = JavaVersion.VERSION_21
-}
-
-jar {
-	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}"}
-	}
 }

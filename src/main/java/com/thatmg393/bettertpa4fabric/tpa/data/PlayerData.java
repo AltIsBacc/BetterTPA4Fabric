@@ -13,5 +13,7 @@ public class PlayerData {
     public final RequestQueue<UUID, BaseRequest> teleportRequests = new RequestQueue<>();
     
     public Pair<ServerWorld, BlockPos> previousTeleportPosition;
+
     public boolean isPlayerTeleporting = false;
+    public boolean allowTeleportRequests = true;
 }
