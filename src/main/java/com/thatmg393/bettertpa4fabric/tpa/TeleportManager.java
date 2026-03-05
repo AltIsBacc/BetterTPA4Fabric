@@ -149,6 +149,8 @@ public class TeleportManager {
             accepterData.teleportRequests.consumeByKey(from.getUuid());
         }
 
+        if (request.isExpired()) return 0;
+
         Pair<String, String> acceptedMessages = request.getAcceptedKeys();
         if (acceptedMessages.second() != null)
             accepter.sendMessage(MCTextUtils.fromLang(acceptedMessages.second(), from.getName().getString()));
@@ -178,6 +180,8 @@ public class TeleportManager {
                 return 0;
             }
         }
+
+        if (request.isExpired()) return 1;
 
         Pair<String, String> deniedMessages = request.getDeniedKeys();
         if (deniedMessages.second() != null)
