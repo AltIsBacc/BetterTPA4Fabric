@@ -23,18 +23,13 @@ public class BetterTPA4Fabric implements DedicatedServerModInitializer {
 
 	@Override
 	public void onInitializeServer() {
-		LOGGER.info("Using BetterTPA4Fabric " + FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString());
-	LOGGER.info("Loading config...");
-		ModConfigManager.loadOrGetConfig();
-		LOGGER.info("Loaded!");
-
-		LOGGER.info("Registering BetterTPA4Fabric commands...");
-		registerCommands();
-		LOGGER.info("Registered, have fun!");
-
+        LOGGER.info("xin, here i am!");
         TeleportManager.INSTANCE.init();
         LOGGER.info("if 1 + 2 is 3 then 2 + 1 is 2");
-    }
+		LOGGER.info("Using BetterTPA4Fabric " + FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString());
+
+		registerCommands();
+	}
 
 	private void registerCommands() {
 		CommandRegistrationCallback.EVENT.register((dispatcher, registry, env) -> {
