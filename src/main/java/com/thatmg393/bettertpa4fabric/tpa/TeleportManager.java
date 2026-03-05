@@ -203,6 +203,8 @@ public class TeleportManager {
                 TPA, player.getChunkPos(), 3
             );
 
+            TeleportManager.INSTANCE.getPlayerData(player.getUuid()).previousTeleportPosition = Pair.of(player.getEntityWorld(), player.getBlockPos());
+
             player.teleport(
                 world,
                 position.getX(), position.getY(), position.getZ(),
@@ -210,6 +212,8 @@ public class TeleportManager {
                 player.getYaw(), player.getPitch(),
                 false
             );
+
+            player.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.teleport.success"));
         });
     }
 

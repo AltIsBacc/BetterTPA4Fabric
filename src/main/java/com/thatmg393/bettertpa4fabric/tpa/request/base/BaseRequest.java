@@ -46,9 +46,6 @@ public abstract class BaseRequest {
                     target.ifLeft(t -> t.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.cancelled.target_dead")));
                 }
                 case SUCCESS -> {
-                    teleportingPlayer.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.teleport.success"));
-                    TeleportManager.INSTANCE.getPlayerData(teleportingPlayer.getUuid()).previousTeleportPosition = Pair.of(teleportingPlayer.getEntityWorld(), teleportingPlayer.getBlockPos());
-
                     target.ifLeft(t -> TeleportManager.INSTANCE.doTeleport(teleportingPlayer, t.getEntityWorld(), t.getBlockPos()))
                         .ifRight(pos -> TeleportManager.INSTANCE.doTeleport(teleportingPlayer, pos.first(), pos.second()));
                 }

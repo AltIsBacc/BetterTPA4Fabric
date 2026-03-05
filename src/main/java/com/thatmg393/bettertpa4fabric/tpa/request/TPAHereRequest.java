@@ -27,10 +27,7 @@ public class TPAHereRequest extends BaseRequest {
             teleportingPlayer, Optional.of(getRequester()),
             BetterTPA4Fabric.CONFIG.tpaTeleportTime * 20,
             res -> {
-                if (res == TeleportTask.Result.REQUESTER_MOVED && BetterTPA4Fabric.CONFIG.resetTimerOnMove) {
-                    TeleportManager.INSTANCE.getPlayerData(getRequester().getUuid()).isPlayerTeleporting = true;
-                }
-
+                TeleportManager.INSTANCE.getPlayerData(getRequester().getUuid()).isPlayerTeleporting = (res == TeleportTask.Result.REQUESTER_MOVED && BetterTPA4Fabric.CONFIG.resetTimerOnMove);
                 buildCallback(teleportingPlayer, Either.left(getRequester())).accept(res);
             }
         );
