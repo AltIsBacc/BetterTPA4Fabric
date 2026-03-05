@@ -11,10 +11,10 @@ import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import com.thatmg393.bettertpa4fabric.tpa.TeleportManager;
 import com.thatmg393.bettertpa4fabric.tpa.data.PlayerData;
+import com.thatmg393.bettertpa4fabric.utils.MCTextUtils;
 
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.Text;
 
 public class TPAArgumentType implements ArgumentType<String> {
 
@@ -87,15 +87,44 @@ public class TPAArgumentType implements ArgumentType<String> {
      * Throws a user-visible error if the player is offline.
      */
     public static ServerPlayerEntity resolve(
-        CommandContext<ServerCommandSource> ctx, String argName
+        CommandContext<ServerCommandSource> ctx,
+        String argName,
+        Mode mode
     ) throws CommandSyntaxException {
-        String name = ctx.getArgument(argName, String.class); // TODO: make a record class that contains name and uuid
+        String name = ctx.getArgument(argName, String.class);
         ServerPlayerEntity player = ctx.getSource().getServer().getPlayerManager().getPlayer(name);
-        
+
         if (player == null) {
             throw new SimpleCommandExceptionType(
-                Text.literal("Player '" + name + "' is not online.")
+                MCTextUtils.fromLang("bettertpa4fabric.message.error.target_offline", name)
             ).create();
+        }
+
+        ServerPlayerEntity self = ctx.getSource().getPlayer();
+        switch (mode) {
+            case INCOMING_REQUESTS -> {
+                PlayerData selfData = TeleportManager.INSTANCE.getPlayerData(self.getUuid());
+                
+                if (!selfData.teleportRequests.containsKey(player.getUuid())) {
+                    throw new SimpleCommandExceptionType(
+                        MCTextUtils.fromLang("bettertpa4fabric.message.error.no_request_from_player", name)
+                    ).create();
+                }
+            }
+
+            case ALLOWED_PLAYERS -> {
+                if (player.equals(self)) {
+                    throw new SimpleCommandExceptionType(
+                        MCTextUtils.fromLang("bettertpa4fabric.message.error.tpa_to_self")
+                    ).create();
+                }
+                PlayerData targetData = TeleportManager.INSTANCE.getPlayerData(player.getUuid());
+                if (!targetData.allowTeleportRequests) {
+                    throw new SimpleCommandExceptionType(
+                        MCTextUtils.fromLang("bettertpa4fabric.message.error.tpa_not_allowed")
+                    ).create();
+                }
+            }
         }
 
         return player;

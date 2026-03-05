@@ -38,7 +38,12 @@ public class BetterTPA4Fabric implements DedicatedServerModInitializer {
 				.requires(ServerCommandSource::isExecutedByPlayer)
 				.then(
 					argument("to", TPAArgumentType.allowedPlayers())
-                    .executes(ctx -> TeleportManager.INSTANCE.teleportTo(ctx.getSource().getPlayer(), TPAArgumentType.resolve(ctx, "to")))
+                    .executes(ctx -> TeleportManager.INSTANCE.teleportTo(
+                        ctx.getSource().getPlayer(),
+                        TPAArgumentType.resolve(
+                            ctx, "to", TPAArgumentType.Mode.ALLOWED_PLAYERS
+                        )
+                    ))
                 )
 			);
 
@@ -47,7 +52,12 @@ public class BetterTPA4Fabric implements DedicatedServerModInitializer {
 				.requires(ServerCommandSource::isExecutedByPlayer)
 				.then(
 					argument("who", TPAArgumentType.allowedPlayers())
-					.executes(ctx ->  TeleportManager.INSTANCE.teleportHere(ctx.getSource().getPlayer(), TPAArgumentType.resolve(ctx, "who")))
+					.executes(ctx ->  TeleportManager.INSTANCE.teleportHere(
+                        ctx.getSource().getPlayer(),
+                        TPAArgumentType.resolve(
+                            ctx, "who", TPAArgumentType.Mode.ALLOWED_PLAYERS
+                        )
+                    ))
 				)
 			);
 
@@ -62,7 +72,12 @@ public class BetterTPA4Fabric implements DedicatedServerModInitializer {
 				.requires(ServerCommandSource::isExecutedByPlayer)
 				.then(
 					argument("from", TPAArgumentType.incomingRequests())
-                    .executes(ctx -> TeleportManager.INSTANCE.acceptTeleport(ctx.getSource().getPlayer(), TPAArgumentType.resolve(ctx, "from")))
+                    .executes(ctx -> TeleportManager.INSTANCE.acceptTeleport(
+                        ctx.getSource().getPlayer(),
+                        TPAArgumentType.resolve(
+                            ctx, "from", TPAArgumentType.Mode.INCOMING_REQUESTS
+                        )
+                    ))
 				)
 				.executes(ctx -> TeleportManager.INSTANCE.acceptTeleport(ctx.getSource().getPlayer(), null))
 			);
@@ -72,7 +87,12 @@ public class BetterTPA4Fabric implements DedicatedServerModInitializer {
 				.requires(ServerCommandSource::isExecutedByPlayer)
 				.then(
 					argument("from", TPAArgumentType.incomingRequests())
-					.executes(ctx -> TeleportManager.INSTANCE.denyTeleport(ctx.getSource().getPlayer(), TPAArgumentType.resolve(ctx, "from")))
+					.executes(ctx -> TeleportManager.INSTANCE.denyTeleport(
+                        ctx.getSource().getPlayer(),
+                        TPAArgumentType.resolve(
+                            ctx, "from", TPAArgumentType.Mode.INCOMING_REQUESTS
+                        )
+                    ))
 				)
 				.executes(ctx -> TeleportManager.INSTANCE.denyTeleport(ctx.getSource().getPlayer(), null))
 			);
