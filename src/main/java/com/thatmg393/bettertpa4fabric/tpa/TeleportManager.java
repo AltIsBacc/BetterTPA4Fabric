@@ -96,6 +96,10 @@ public class TeleportManager {
 
     public int teleportBack(ServerPlayerEntity player) {
         PlayerData playerData = getPlayerData(player.getUuid());
+        if (playerData.isPlayerTeleporting) {
+            player.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.requester_is_teleporting"));
+            return 0;
+        }
 
         if (playerData.previousTeleportPosition == null) {
             player.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_back_location"));
