@@ -1,19 +1,18 @@
 package com.thatmg393.bettertpa4fabric.config;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Paths;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.thatmg393.bettertpa4fabric.BetterTPA4Fabric;
 import com.thatmg393.bettertpa4fabric.config.data.ModConfigData;
 
 import net.fabricmc.loader.api.FabricLoader;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Paths;
 
 public class ModConfigManager {
     private static final Gson GSON = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
@@ -30,15 +29,14 @@ public class ModConfigManager {
         if (loadedConfig != null)
             return loadedConfig;
 
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(CONFIG_PATH));
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(CONFIG_PATH))) {
             ModConfigData parsedConfig = GSON.fromJson(bufferedReader, ModConfigData.class);
 
             if (parsedConfig.configVersion != defaultConfig.configVersion)
                 BetterTPA4Fabric.LOGGER.warn("Config versions DO NOT MATCH!"); // TODO? : do smth with old conf ver
             
             loadedConfig = parsedConfig;
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             BetterTPA4Fabric.LOGGER.error("An exception occurred! " + e.toString());
 
             BetterTPA4Fabric.LOGGER.info("Using default config instead...");
