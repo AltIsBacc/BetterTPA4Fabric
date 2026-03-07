@@ -2,13 +2,13 @@
 Yet another TPA mod for Fabric.
 
 # Commands
-- [x] tpa {to}
+- [x] tpa {target}
 - [x] tpahere {target}
 - [x] tpaback
-- [x] tpaaccept [from]
-- [x] tpadeny [from]
-- [ ] tpacancel [to]
-- [ ] tpaallow [true|false]
+- [x] tpaaccept [sender]
+- [x] tpadeny [sender]
+- [x] tpaallow [true|false]
+- [ ] tpacancel {target}
 - [ ] tpaconfig {key} {value}
 
 > { } is required, [ ] is optional
@@ -25,7 +25,7 @@ Yet another TPA mod for Fabric.
 
 # To-do
 - [ ] `/tpacancel`
-- [ ] `/tpaallow`
+- [x] `/tpaallow`
 - [ ] `/tpaconfig` / runtime config modification
 - [ ] Formatted messages
 - [ ] Teleport effects
