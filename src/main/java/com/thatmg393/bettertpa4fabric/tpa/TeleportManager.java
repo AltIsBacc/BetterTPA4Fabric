@@ -239,7 +239,7 @@ public class TeleportManager {
         ServerWorld world,
         BlockPos position
     ) {
-        world.getServer().execute(() -> {
+        world.getServer().executeSync(() -> {
             // this is version sensitive!
             player.getEntityWorld().getChunkManager().addChunkLoadingTicket(
                 TPA, player.getChunkPos(), 3
