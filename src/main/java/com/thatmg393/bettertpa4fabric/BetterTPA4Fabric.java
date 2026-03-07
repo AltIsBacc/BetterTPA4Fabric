@@ -12,6 +12,7 @@ import com.thatmg393.bettertpa4fabric.command.argument.TPAArgumentType;
 import com.thatmg393.bettertpa4fabric.config.ModConfigManager;
 import com.thatmg393.bettertpa4fabric.config.data.ModConfigData;
 import com.thatmg393.bettertpa4fabric.tpa.TeleportManager;
+import com.thatmg393.bettertpa4fabric.utils.MCTextUtils;
 
 import net.fabricmc.api.DedicatedServerModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
@@ -104,6 +105,25 @@ public class BetterTPA4Fabric implements DedicatedServerModInitializer {
 				)
 				.executes(ctx -> TeleportManager.INSTANCE.allowTeleport(ctx.getSource().getPlayer(), null))
 			);
+
+            dispatcher.register(
+                literal("tpaabout")
+                .executes(ctx -> {
+                    ctx.getSource().sendMessage(MCTextUtils.textOf(
+                        "BetterTPA4Fabric {}", FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString()
+                    ));
+
+                    ctx.getSource().sendMessage(MCTextUtils.textOf(
+                        "Made with ♡² by ThatMG393 (AltIsBacc)!"
+                    ));
+
+                    ctx.getSource().sendMessage(MCTextUtils.textOf(
+                        "(*˘︶˘*).。.:*♡"
+                    ));
+
+                    return 1;
+                })
+            );
 
 			/*
 			dispatcher.register(

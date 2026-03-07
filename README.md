@@ -8,6 +8,7 @@ Yet another TPA mod for Fabric.
 - [x] tpaaccept [sender]
 - [x] tpadeny [sender]
 - [x] tpaallow [true|false]
+- [x] tpaabout
 - [ ] tpacancel {target}
 - [ ] tpaconfig {key} {value}
 
