@@ -24,7 +24,7 @@ public class TPAArgumentType {
     }
 
     public static final TPAArgumentType INCOMING_REQUESTS = new TPAArgumentType(Mode.INCOMING_REQUESTS);
-    public static final TPAArgumentType ALLOWED_PLAYERS = new TPAArgumentType(Mode.INCOMING_REQUESTS);
+    public static final TPAArgumentType ALLOWED_PLAYERS = new TPAArgumentType(Mode.ALLOWED_PLAYERS);
 
     private final Mode mode;
 
