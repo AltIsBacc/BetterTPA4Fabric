@@ -125,6 +125,11 @@ public class TeleportManager {
 
         BaseRequest request;
         if (from == null) {
+            if (accepterData.teleportRequests.isEmpty()) {
+                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
+                return 0;
+            }
+            
             request = accepterData.teleportRequests.firstEntry().getValue();
             if (request == null) {
                 accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
@@ -171,6 +176,11 @@ public class TeleportManager {
         BaseRequest request;
 
         if (from == null) {
+            if (denierData.teleportRequests.isEmpty()) {
+                denier.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
+                return 0;
+            }
+            
             request = denierData.teleportRequests.consume();
             if (request == null) {
                 denier.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
