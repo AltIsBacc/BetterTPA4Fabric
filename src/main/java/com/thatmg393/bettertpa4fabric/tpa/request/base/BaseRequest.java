@@ -22,14 +22,14 @@ public abstract class BaseRequest {
             TeleportManager.INSTANCE.getPlayerData(teleportingPlayer.getUuid()).isPlayerTeleporting = false;
             switch (res) {
                 case REQUESTER_MOVED -> {
-                    String key1 = "bettertpa4fabric.message.error.cancelled.requester_moved";
-                    String key2 = "bettertpa4fabric.message.error.cancelled.requester_moved.receiver";
+                    String key1 = "bettertpa4fabric.message.error.cancelled.you_moved";
+                    String key2 = "bettertpa4fabric.message.error.cancelled.they_moved";
 
                     if (BetterTPA4Fabric.CONFIG.resetTimerOnMove) {
                         TeleportManager.INSTANCE.getPlayerData(teleportingPlayer.getUuid()).isPlayerTeleporting = true;
 
-                        key1 = "bettertpa4fabric.message.error.reset.requester_moved";
-                        key2 = "bettertpa4fabric.message.error.reset.requester_moved.receiver";
+                        key1 = "bettertpa4fabric.message.error.reset.you_moved";
+                        key2 = "bettertpa4fabric.message.error.reset.they_moved";
                     }
 
                     teleportingPlayer.sendMessage(MCTextUtils.fromLang(key1));
@@ -38,12 +38,12 @@ public abstract class BaseRequest {
                     target.ifLeft(t -> t.sendMessage(MCTextUtils.fromLang(realKey2)));
                 }
                 case REQUESTER_DIED -> {
-                    teleportingPlayer.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.cancelled.requester_dead"));
-                    target.ifLeft(t -> t.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.cancelled.requester_dead.receiver")));
+                    teleportingPlayer.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.cancelled.you_died"));
+                    target.ifLeft(t -> t.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.cancelled.they_died")));
                 }
                 case TARGET_DIED -> {
-                    teleportingPlayer.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.cancelled.target_dead.requester"));
-                    target.ifLeft(t -> t.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.cancelled.target_dead")));
+                    teleportingPlayer.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.cancelled.target_died"));
+                    target.ifLeft(t -> t.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.cancelled.target_died.notify")));
                 }
                 case SUCCESS -> {
                     target.ifLeft(t -> TeleportManager.INSTANCE.doTeleport(teleportingPlayer, t.getEntityWorld(), t.getBlockPos()))

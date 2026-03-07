@@ -36,24 +36,24 @@ public class TPAHereRequest extends BaseRequest {
     @Override
     public Pair<String, String> getExpiredKeys() {
         return Pair.of(
-            "bettertpa4fabric.message.tpahere.expired.requester",
-            "bettertpa4fabric.message.tpahere.expired.receiver"
+            "bettertpa4fabric.message.tpahere.expired.sender",
+            "bettertpa4fabric.message.tpahere.expired.accepter"
         );
     }
 
     @Override
     public Pair<String, String> getAcceptedKeys() {
         return Pair.of(
-            "bettertpa4fabric.message.tpahere.accepted.requester",
-            "bettertpa4fabric.message.tpahere.accepted.receiver"
+            "bettertpa4fabric.message.tpahere.accepted.sender",
+            "bettertpa4fabric.message.tpahere.accepted.accepter"
         );
     }
 
     @Override
     public Pair<String, String> getDeniedKeys() {
         return Pair.of(
-            "bettertpa4fabric.message.tpahere.denied.requester",
-            "bettertpa4fabric.message.tpahere.denied.receiver"
+            "bettertpa4fabric.message.tpahere.denied.sender",
+            "bettertpa4fabric.message.tpahere.denied.denier"
         );
     }
 }

@@ -101,7 +101,7 @@ public class TeleportManager {
     public int teleportBack(ServerPlayerEntity player) {
         PlayerData playerData = getPlayerData(player.getUuid());
         if (playerData.isPlayerTeleporting) {
-            player.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.requester_is_teleporting"));
+            player.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.you_are_teleporting"));
             return 0;
         }
 
@@ -119,7 +119,7 @@ public class TeleportManager {
     public int acceptTeleport(ServerPlayerEntity accepter, @Nullable ServerPlayerEntity from) {
         PlayerData accepterData = getPlayerData(accepter.getUuid());
         if (accepterData.isPlayerTeleporting) {
-            accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.requester_is_teleporting"));
+            accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.you_are_teleporting"));
             return 0;
         }
 
@@ -138,14 +138,14 @@ public class TeleportManager {
 
             from = request.getRequester();
             if (getPlayerData(from.getUuid()).isPlayerTeleporting) {
-                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.receiver_is_teleporting"));
+                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.they_are_teleporting"));
                 return 0;
             }
 
             accepterData.teleportRequests.consume();
         } else {
             if (getPlayerData(from.getUuid()).isPlayerTeleporting) {
-                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.receiver_is_teleporting"));
+                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.they_are_teleporting"));
                 return 0;
             }
             

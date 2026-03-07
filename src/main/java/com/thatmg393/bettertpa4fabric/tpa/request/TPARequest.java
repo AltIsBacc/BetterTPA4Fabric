@@ -27,24 +27,24 @@ public class TPARequest extends BaseRequest {
     @Override
     public Pair<String, String> getExpiredKeys() {
         return Pair.of(
-            "bettertpa4fabric.message.tpa.expired.requester",
-            "bettertpa4fabric.message.tpa.expired.receiver"
+            "bettertpa4fabric.message.tpa.expired.sender",
+            "bettertpa4fabric.message.tpa.expired.accepter"
         );
     }
 
     @Override
     public Pair<String, String> getAcceptedKeys() {
         return Pair.of(
-            "bettertpa4fabric.message.tpa.accepted.requester",
-            "bettertpa4fabric.message.tpa.accepted.receiver"
+            "bettertpa4fabric.message.tpa.accepted.sender",
+            "bettertpa4fabric.message.tpa.accepted.accepter"
         );
     }
 
     @Override
     public Pair<String, String> getDeniedKeys() {
         return Pair.of(
-            "bettertpa4fabric.message.tpa.denied.requester",
-            "bettertpa4fabric.message.tpa.denied.receiver"
+            "bettertpa4fabric.message.tpa.denied.sender",
+            "bettertpa4fabric.message.tpa.denied.denier"
         );
     }
 }
