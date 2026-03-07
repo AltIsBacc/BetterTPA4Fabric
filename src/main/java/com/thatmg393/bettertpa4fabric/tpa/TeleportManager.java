@@ -59,6 +59,10 @@ public class TeleportManager {
         }
 
         PlayerData receiverData = getPlayerData(receiver.getUuid());
+        if (!receiverData.allowTeleportRequests) {
+            sender.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.tpa_not_allowed"));
+            return 0;
+        }
 
         if (receiverData.teleportRequests.containsKey(sender.getUuid())) {
             sender.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.existing_request"));
@@ -82,6 +86,10 @@ public class TeleportManager {
         }
 
         PlayerData receiverData = getPlayerData(receiver.getUuid());
+        if (!receiverData.allowTeleportRequests) {
+            sender.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.tpa_not_allowed"));
+            return 0;
+        }
 
         if (receiverData.teleportRequests.containsKey(sender.getUuid())) {
             sender.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.existing_request"));
@@ -206,6 +214,26 @@ public class TeleportManager {
         return 1;
     }
 
+    public int allowTeleport(ServerPlayerEntity self, Boolean newValue) {
+        PlayerData selfData = getPlayerData(self.getUuid());
+        
+        if (newValue == null) {
+            self.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa_allow.status", selfData.allowTeleportRequests));
+            return 1;
+        }
+
+        if (newValue == selfData.allowTeleportRequests) {
+            self.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa_allow.nothing_changed"));
+            return 0;
+        }
+
+        String messageKey = "bettertpa4fabric.message.tpa_allow." + ((newValue) ? "enabled" : "disabled");
+        self.sendMessage(MCTextUtils.fromLang(messageKey));
+
+        selfData.isPlayerTeleporting = newValue;
+        return 1;
+    }
+
     public void doTeleport(
         ServerPlayerEntity player,
         ServerWorld world,
@@ -217,7 +245,7 @@ public class TeleportManager {
                 TPA, player.getChunkPos(), 3
             );
 
-            TeleportManager.INSTANCE.getPlayerData(player.getUuid()).previousTeleportPosition = Pair.of(player.getEntityWorld(), player.getBlockPos());
+            getPlayerData(player.getUuid()).previousTeleportPosition = Pair.of(player.getEntityWorld(), player.getBlockPos());
 
             player.teleport(
                 world,

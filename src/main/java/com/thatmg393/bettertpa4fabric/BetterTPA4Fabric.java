@@ -6,6 +6,7 @@ import static net.minecraft.server.command.CommandManager.literal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.thatmg393.bettertpa4fabric.command.argument.TPAArgumentType;
 import com.thatmg393.bettertpa4fabric.config.ModConfigManager;
@@ -94,16 +95,15 @@ public class BetterTPA4Fabric implements DedicatedServerModInitializer {
                 .executes(ctx -> TeleportManager.INSTANCE.denyTeleport(ctx.getSource().getPlayer(), null))
             );
 
-            /*
 			dispatcher.register(
 				literal("tpaallow")
 				.requires(ServerCommandSource::isExecutedByPlayer)
 				.then(
-					argument("allow", BoolArgumentType.bool())
-					.executes(ctx -> TPAManager.getInstance().tpaallow(ctx.getSource().getPlayer(), BoolArgumentType.getBool(ctx, "allow")))
+					argument("isAllowed", BoolArgumentType.bool())
+					.executes(ctx -> TeleportManager.INSTANCE.allowTeleport(ctx.getSource().getPlayer(), BoolArgumentType.getBool(ctx, "isAllowed")))
 				)
-				.executes(ctx -> TPAManager.getInstance().tpaallow(ctx.getSource().getPlayer()))
-			); */
+				.executes(ctx -> TeleportManager.INSTANCE.allowTeleport(ctx.getSource().getPlayer(), null))
+			);
 
 			/*
 			dispatcher.register(
