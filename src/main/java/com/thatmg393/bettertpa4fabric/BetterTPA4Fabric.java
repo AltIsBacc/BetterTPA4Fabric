@@ -29,7 +29,7 @@ public class BetterTPA4Fabric implements DedicatedServerModInitializer {
         LOGGER.info("xin, here i am!");
         TeleportManager.INSTANCE.init();
         LOGGER.info("if 1 + 2 is 3 then 2 + 1 is 2");
-        LOGGER.info("Using BetterTPA4Fabric " + FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString());
+        LOGGER.info("Using BetterTPA4Fabric v" + FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString());
 
         registerCommands();
     }
@@ -123,7 +123,7 @@ public class BetterTPA4Fabric implements DedicatedServerModInitializer {
                 literal("tpaabout")
                 .executes(ctx -> {
                     ctx.getSource().sendMessage(MCTextUtils.textOf(
-                        "BetterTPA4Fabric {}", FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString()
+                        "BetterTPA4Fabric v{}", FabricLoader.getInstance().getModContainer(MOD_ID).get().getMetadata().getVersion().getFriendlyString()
                     ));
 
                     ctx.getSource().sendMessage(MCTextUtils.textOf(
