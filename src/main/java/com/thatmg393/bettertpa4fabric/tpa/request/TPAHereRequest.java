@@ -29,6 +29,7 @@ public class TPAHereRequest extends BaseRequest {
             res -> {
                 TeleportManager.INSTANCE.getPlayerData(getRequester().getUuid()).isPlayerTeleporting = (res == TeleportTask.Result.REQUESTER_MOVED && BetterTPA4Fabric.CONFIG.resetTimerOnMove);
                 buildCallback(teleportingPlayer, Either.left(getRequester())).accept(res);
+                TeleportManager.INSTANCE.getPlayerData(teleportingPlayer.getUuid()).isPlayerTeleporting = (res == TeleportTask.Result.REQUESTER_MOVED && BetterTPA4Fabric.CONFIG.resetTimerOnMove);
             }
         );
     }
