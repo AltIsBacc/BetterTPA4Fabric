@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 
 import com.thatmg393.bettertpa4fabric.BetterTPA4Fabric;
 import com.thatmg393.bettertpa4fabric.tpa.data.PlayerData;
+import com.thatmg393.bettertpa4fabric.tpa.queue.RequestQueue;
 import com.thatmg393.bettertpa4fabric.tpa.request.TPABackRequest;
 import com.thatmg393.bettertpa4fabric.tpa.request.TPAHereRequest;
 import com.thatmg393.bettertpa4fabric.tpa.request.TPARequest;
@@ -130,21 +131,10 @@ public class TeleportManager {
             return 0;
         }
 
-        BaseRequest request;
+        BaseRequest request = null;
         if (from == null) {
-            if (accepterData.teleportRequests.isEmpty()) {
-                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
-                return 0;
-            }
-
-            request = accepterData.teleportRequests.firstEntry().getValue();
+            request = findFirstValidRequest(accepterData.teleportRequests);
             if (request == null) {
-                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
-                return 0;
-            }
-
-            if (request.isExpired()) {
-                accepterData.teleportRequests.consume();
                 accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
                 return 0;
             }
@@ -184,16 +174,17 @@ public class TeleportManager {
 
     public int denyTeleport(ServerPlayerEntity denier, @Nullable ServerPlayerEntity from) {
         PlayerData denierData = getPlayerData(denier.getUuid());
-        BaseRequest request;
+        BaseRequest request = null;
 
         if (from == null) {
-            request = denierData.teleportRequests.consume();
-            if (request == null || request.isExpired()) {
+            request = findFirstValidRequest(denierData.teleportRequests);
+            if (request == null) {
                 denier.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
                 return 0;
             }
 
             from = request.getRequester();
+            denierData.teleportRequests.consume();
         } else {
             request = denierData.teleportRequests.consumeByKey(from.getUuid());
             if (request == null || request.isExpired()) {
@@ -279,5 +270,23 @@ public class TeleportManager {
 
     public ObjectCollection<PlayerData> getPlayerDatas() {
         return playerDatas.values();
+    }
+
+    private @Nullable BaseRequest findFirstValidRequest(RequestQueue<UUID, BaseRequest> queue) {
+        while (!queue.isEmpty()) {
+            BaseRequest candidate = queue.firstEntry().getValue();
+            if (candidate == null) {
+                queue.consume();
+                continue;
+            }
+
+            if (candidate.isExpired()) {
+                queue.consume();
+                continue;
+            }
+
+            return candidate;
+        }
+        return null;
     }
 }
