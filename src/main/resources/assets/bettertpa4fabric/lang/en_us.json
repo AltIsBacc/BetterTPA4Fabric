@@ -21,6 +21,9 @@
     "bettertpa4fabric.message.tpahere.expired.sender": "Your TPA-Here request to {} has expired.",
     "bettertpa4fabric.message.tpahere.expired.accepter": "{}'s TPA-Here request has expired.",
 
+    "bettertpa4fabric.message.tpa.cancelled.canceller": "You cancelled your TPA request to {}.",
+    "bettertpa4fabric.message.tpa.cancelled.target": "{} cancelled their TPA request.",
+
     "bettertpa4fabric.message.tpa_allow.status": "TPA-Allow is currently {}.",
     "bettertpa4fabric.message.tpa_allow.nothing_changed": "TPA-Allow state is the same as before! Nothing changed.",
     "bettertpa4fabric.message.tpa_allow.enabled": "TPA-Allow is now on. You can now receive TPA requests.",
@@ -33,6 +36,7 @@
     "bettertpa4fabric.message.error.no_back_location": "You have not teleported anywhere yet.",
     "bettertpa4fabric.message.error.no_incoming_requests": "You have no incoming TPA requests.",
     "bettertpa4fabric.message.error.no_request_from_player": "You have no TPA request from {}.",
+    "bettertpa4fabric.message.error.no_request_to_player": "You have no TPA request to {}.",
     "bettertpa4fabric.message.error.target_offline": "Player '{}' is not online.",
 
     "bettertpa4fabric.message.error.you_are_teleporting": "You are already teleporting!",

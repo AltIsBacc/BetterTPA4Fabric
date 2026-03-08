@@ -9,7 +9,7 @@ Yet another TPA mod for Fabric.
 - [x] tpadeny [sender]
 - [x] tpaallow [true|false]
 - [x] tpaabout
-- [ ] tpacancel {target}
+- [x] tpacancel {target}
 - [ ] tpaconfig {key} {value}
 
 > { } is required, [ ] is optional
@@ -25,7 +25,7 @@ Yet another TPA mod for Fabric.
 | resetTimerOnMove | false | Whether moving resets the teleport countdown |
 
 # To-do
-- [ ] `/tpacancel`
+- [x] `/tpacancel`
 - [x] `/tpaallow`
 - [ ] `/tpaconfig` / runtime config modification
 - [ ] Formatted messages

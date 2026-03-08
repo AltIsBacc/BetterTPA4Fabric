@@ -19,11 +19,14 @@ public class TPAArgumentType {
     public enum Mode {
         /** Suggests players who have sent YOU a request (for tpaaccept/tpadeny) */
         INCOMING_REQUESTS,
+        /** Suggests players who you have sent a request (for tpacancel)  */
+        OUTGOING_REQUESTS,
         /** Suggests all allowed players except yourself (for tpa/tpahere) */
         ALLOWED_PLAYERS
     }
 
     public static final TPAArgumentType INCOMING_REQUESTS = new TPAArgumentType(Mode.INCOMING_REQUESTS);
+    public static final TPAArgumentType OUTGOING_REQUESTS = new TPAArgumentType(Mode.OUTGOING_REQUESTS);
     public static final TPAArgumentType ALLOWED_PLAYERS = new TPAArgumentType(Mode.ALLOWED_PLAYERS);
 
     private final Mode mode;
@@ -50,6 +53,17 @@ public class TPAArgumentType {
                     .filter(e -> !e.getValue().isExpired())
                     .map(e -> e.getValue().getRequester())
                     .filter(p -> p.networkHandler.isConnectionOpen())
+                    .map(ServerPlayerEntity::getNameForScoreboard)
+                    .filter(name -> name.startsWith(builder.getRemaining()))
+                    .forEach(builder::suggest);
+            }
+
+            case OUTGOING_REQUESTS -> {
+                TeleportManager.INSTANCE.streamPlayerDatas()
+                    .filter(e -> !e.getKey().equals(self.getUuid()))
+                    .filter(e -> e.getValue().teleportRequests.containsKey(self.getUuid()))
+                    .map(e -> source.getServer().getPlayerManager().getPlayer(e.getKey()))
+                    .filter(p -> p != null)
                     .map(ServerPlayerEntity::getNameForScoreboard)
                     .filter(name -> name.startsWith(builder.getRemaining()))
                     .forEach(builder::suggest);
@@ -95,6 +109,15 @@ public class TPAArgumentType {
                 if (!selfData.teleportRequests.containsKey(player.getUuid())) {
                     throw new SimpleCommandExceptionType(
                         MCTextUtils.fromLang("bettertpa4fabric.message.error.no_request_from_player", name)
+                    ).create();
+                }
+            }
+
+            case OUTGOING_REQUESTS -> {
+                PlayerData targetData = TeleportManager.INSTANCE.getPlayerData(player.getUuid());
+                if (!targetData.teleportRequests.containsKey(self.getUuid())) {
+                    throw new SimpleCommandExceptionType(
+                        MCTextUtils.fromLang("bettertpa4fabric.message.error.no_request_to_player", name)
                     ).create();
                 }
             }

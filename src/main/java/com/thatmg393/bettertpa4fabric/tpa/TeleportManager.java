@@ -211,6 +211,20 @@ public class TeleportManager {
         return 1;
     }
 
+    public int cancelTeleport(ServerPlayerEntity canceller, ServerPlayerEntity to) {
+        PlayerData toData = getPlayerData(to.getUuid());
+
+        BaseRequest request = toData.teleportRequests.consumeByKey(canceller.getUuid());
+        if (request == null || request.isExpired()) {
+            canceller.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_request_to_player", to.getName().getString()));
+            return 0;
+        }
+
+        canceller.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa.cancelled.canceller", to.getName().getString()));
+        to.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa.cancelled.target", canceller.getName().getString()));
+        return 1;
+    }
+
     public int allowTeleport(ServerPlayerEntity self, Boolean newValue) {
         PlayerData selfData = getPlayerData(self.getUuid());
         if (newValue == null) {
