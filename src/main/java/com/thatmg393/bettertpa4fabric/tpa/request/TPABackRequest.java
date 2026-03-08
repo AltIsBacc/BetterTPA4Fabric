@@ -7,12 +7,13 @@ import com.thatmg393.bettertpa4fabric.tpa.tickable.task.TeleportTask;
 import com.thatmg393.bettertpa4fabric.utils.Either;
 
 import it.unimi.dsi.fastutil.Pair;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public class TPABackRequest extends BaseRequest {
-    public TPABackRequest(ServerPlayerEntity requester, Pair<ServerWorld, BlockPos> target) {
+    public TPABackRequest(ServerPlayerEntity requester, Pair<RegistryKey<World>, BlockPos> target) {
         super(requester, Either.right(target));
     }
 

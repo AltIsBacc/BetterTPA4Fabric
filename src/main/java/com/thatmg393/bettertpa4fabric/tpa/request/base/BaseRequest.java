@@ -9,14 +9,15 @@ import com.thatmg393.bettertpa4fabric.utils.Either;
 import com.thatmg393.bettertpa4fabric.utils.MCTextUtils;
 
 import it.unimi.dsi.fastutil.Pair;
+import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 public abstract class BaseRequest {
     public static Consumer<TeleportTask.Result> buildCallback(
         ServerPlayerEntity teleportingPlayer,
-        Either<ServerPlayerEntity, Pair<ServerWorld, BlockPos>> target
+        Either<ServerPlayerEntity, Pair<RegistryKey<World>, BlockPos>> target
     ) {
         return res -> {
             TeleportManager.INSTANCE.getPlayerData(teleportingPlayer.getUuid()).isPlayerTeleporting = false;
@@ -54,11 +55,11 @@ public abstract class BaseRequest {
     }
 
     private final ServerPlayerEntity requester;
-    private final Either<ServerPlayerEntity, Pair<ServerWorld, BlockPos>> target;
+    private final Either<ServerPlayerEntity, Pair<RegistryKey<World>, BlockPos>> target;
 
     private final long createdAt = System.currentTimeMillis();
 
-    public BaseRequest(ServerPlayerEntity requester, Either<ServerPlayerEntity, Pair<ServerWorld, BlockPos>> target) {
+    public BaseRequest(ServerPlayerEntity requester, Either<ServerPlayerEntity, Pair<RegistryKey<World>, BlockPos>> target) {
         this.requester = requester;
         this.target = target;
     }
@@ -67,7 +68,7 @@ public abstract class BaseRequest {
         return requester;
     }
 
-    public Either<ServerPlayerEntity, Pair<ServerWorld, BlockPos>> getTarget() {
+    public Either<ServerPlayerEntity, Pair<RegistryKey<World>, BlockPos>> getTarget() {
         return target;
     }
 
