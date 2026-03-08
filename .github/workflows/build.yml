@@ -54,21 +54,23 @@ jobs:
           path: build/libs/
 
       # --- Release-only steps below ---
+      # binver is set only on tagged releases (e.g. "0.0.1"), never on debug builds
+
       - name: Check for previous release tag
         id: prev_tag
-        if: ${{ startsWith(steps.build_bin.outputs.binver, 'v') }}
+        if: ${{ steps.build_bin.outputs.binver != '' }}
         run: |
           PREV=$(git tag --sort=-creatordate | grep -E '^v' | sed -n '2p')
           if [[ -n "$PREV" ]]; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
-            echo "No previous release tag found — skipping changelog generation for first release."
+            echo "No previous release tag found — skipping changelog for first release."
           fi
 
       - name: Update CHANGELOG.md
         id: changelog
-        if: ${{ startsWith(steps.build_bin.outputs.binver, 'v') && steps.prev_tag.outputs.exists == 'true' }}
+        if: ${{ steps.build_bin.outputs.binver != '' && steps.prev_tag.outputs.exists == 'true' }}
         uses: requarks/changelog-action@v1
         with:
           token: ${{ secrets.GH_TOKEN }}
@@ -78,7 +80,7 @@ jobs:
           reverseOrder: true
 
       - name: Commit CHANGELOG.md
-        if: ${{ startsWith(steps.build_bin.outputs.binver, 'v') && steps.prev_tag.outputs.exists == 'true' }}
+        if: ${{ steps.build_bin.outputs.binver != '' && steps.prev_tag.outputs.exists == 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: master
@@ -86,7 +88,7 @@ jobs:
           file_pattern: CHANGELOG.md
 
       - name: Upload to Modrinth and GitHub
-        if: ${{ startsWith(steps.build_bin.outputs.binver, 'v') }}
+        if: ${{ steps.build_bin.outputs.binver != '' }}
         uses: Kir-Antipov/mc-publish@v3
         with:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
@@ -95,8 +97,8 @@ jobs:
           name: BetterTPA4Fabric ${{ steps.build_bin.outputs.binver }}
           files: build/libs/bettertpa4fabric-${{ steps.build_bin.outputs.binver }}.jar
           version-type: release
-
-          github-generate-changelog: false  # We already generate it above
+          github-generate-changelog: false
           github-draft: false
           github-prerelease: false
           changelog-file: CHANGELOG.md
+          
