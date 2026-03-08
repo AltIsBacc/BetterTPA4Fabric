@@ -136,9 +136,15 @@ public class TeleportManager {
                 accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
                 return 0;
             }
-            
+
             request = accepterData.teleportRequests.firstEntry().getValue();
             if (request == null) {
+                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
+                return 0;
+            }
+
+            if (request.isExpired()) {
+                accepterData.teleportRequests.consume();
                 accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
                 return 0;
             }
@@ -157,15 +163,13 @@ public class TeleportManager {
             }
             
             request = accepterData.teleportRequests.findByKey(from.getUuid());
-            if (request == null) {
+            if (request == null || request.isExpired()) {
                 accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_request_from_player", from.getName().getString()));
                 return 0;
             }
 
             accepterData.teleportRequests.consumeByKey(from.getUuid());
         }
-
-        if (request.isExpired()) return 0;
 
         Pair<String, String> acceptedMessages = request.getAcceptedKeys();
         if (acceptedMessages.second() != null)
@@ -183,26 +187,20 @@ public class TeleportManager {
         BaseRequest request;
 
         if (from == null) {
-            if (denierData.teleportRequests.isEmpty()) {
-                denier.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
-                return 0;
-            }
-            
             request = denierData.teleportRequests.consume();
-            if (request == null) {
+            if (request == null || request.isExpired()) {
                 denier.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_incoming_requests"));
                 return 0;
             }
+
             from = request.getRequester();
         } else {
             request = denierData.teleportRequests.consumeByKey(from.getUuid());
-            if (request == null) {
+            if (request == null || request.isExpired()) {
                 denier.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_request_from_player", from.getName().getString()));
                 return 0;
             }
         }
-
-        if (request.isExpired()) return 1;
 
         Pair<String, String> deniedMessages = request.getDeniedKeys();
         if (deniedMessages.second() != null)
