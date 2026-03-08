@@ -73,6 +73,7 @@ public class TPAArgumentType {
                 TeleportManager.INSTANCE.streamPlayerDatas()
                     .filter(e -> !e.getKey().equals(self.getUuid()))
                     .filter(e -> e.getValue().allowTeleportRequests)
+                    .filter(e -> !e.getValue().teleportRequests.containsKey(self.getUuid()))
                     .map(e -> source.getServer().getPlayerManager().getPlayer(e.getKey()))
                     .filter(p -> p != null)
                     .map(ServerPlayerEntity::getNameForScoreboard)
