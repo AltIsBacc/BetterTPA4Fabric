@@ -1,45 +1,61 @@
-TAG="$1"
-BIN_VER="null"
-VERSION_PATTERN="v([0-9.]){5}[+](release[.][0-9]|debug)"
+#!/usr/bin/env bash
+set -euo pipefail
+
+TAG="${1:-}"
+VERSION_PATTERN='[0-9]+\.[0-9]+\.[0-9]+\+[a-z0-9.]+'
 
 # $1 Key | $2 Value
 function set_output() {
-    echo "$1=$2" >> $GITHUB_OUTPUT
-}
-
-function update_binary_version() {
-    NEW_VERSION=$1
-    sed -i'' -E "s#$VERSION_PATTERN#$NEW_VERSION#g" gradle.properties
+    echo "$1=$2" >> "${GITHUB_OUTPUT:-/dev/null}"
 }
 
 function get_bin_ver() {
-    # PROP=$(cat gradle.properties)
-    BIN_VER=$(grep -Eo "$VERSION_PATTERN" gradle.properties)
-    echo "Got version: $BIN_VER"
+    local ver
+    ver=$(grep -Eo "$VERSION_PATTERN" gradle.properties | head -n1)
+    if [[ -z "$ver" ]]; then
+        echo "ERROR: Could not find version in gradle.properties matching pattern: $VERSION_PATTERN" >&2
+        exit 1
+    fi
+    echo "$ver"
 }
 
-echo "Updating binary version"
+function update_binary_version() {
+    local new_version="$1"
+    # Use a looser pattern for replacement so it matches whatever is currently in the file
+    sed -i'' -E "s/mod_version=.*/mod_version=${new_version}/" gradle.properties
+    echo "Updated gradle.properties mod_version -> ${new_version}"
+}
+
+echo "--- Version Resolution ---"
+
 if [[ "$TAG" != refs/tags/v* ]]; then
-    echo "Seems like build is debug"
-    get_bin_ver
-
-    REAL=$(echo $BIN_VER | sed -E "s#(release[.][0-9]|debug)#debug#g")
-    echo "Gonna set BIN_VER to this $REAL"
-
-    update_binary_version $REAL
-    get_bin_ver
+    echo "Non-release build detected, using debug suffix"
+    current=$(get_bin_ver)
+    # Strip any existing suffix and apply +debug.shortcommit
+    base="${current%%+*}"
+    short_commit=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
+    new_version="${base}+debug.${short_commit}"
+    update_binary_version "$new_version"
 else
     TAG="${TAG#refs/tags/}"
-    echo "Build is release, using $TAG as the version"
+    echo "Release build detected, tag: $TAG"
 
-    # set_binary_build_type "release"
-    update_binary_version $TAG
-    get_bin_ver
+    # Validate the tag looks like a version (with or without leading v)
+    if [[ ! "$TAG" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+(\+[a-z0-9.]+)?$ ]]; then
+        echo "ERROR: Tag '$TAG' does not look like a valid version (expected X.Y.Z or vX.Y.Z)" >&2
+        exit 1
+    fi
 
-    echo "Setting build output: binver=$BIN_VER"
-    set_output "binver" $BIN_VER
+    # Strip leading v so Fabric gets clean semver (0.0.8 not v0.0.8)
+    SEMVER="${TAG#v}"
+    update_binary_version "$SEMVER"
+    set_output "binver" "$SEMVER"
+    echo "Release binver set to: $SEMVER (tag: $TAG)"
 fi
-echo "New version: $BIN_VER"
 
-echo "Building with GradleW"
-./gradlew build --no-daemon --configure-on-demand "-Dorg.gradle.parralel=true"
+final_ver=$(get_bin_ver)
+echo "Final version in gradle.properties: $final_ver"
+
+echo ""
+echo "--- Building ---"
+./gradlew build --no-daemon --configure-on-demand -Dorg.gradle.parallel=true

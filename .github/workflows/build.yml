@@ -4,7 +4,7 @@
 # against bad commits.
 
 name: build
-on: 
+on:
   pull_request:
   workflow_dispatch:
   push:
@@ -28,7 +28,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0  # Full history needed for changelog generation
 
       - name: Validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
@@ -53,37 +53,50 @@ jobs:
           name: bettertpa4fabric-build
           path: build/libs/
 
-      - name: Update CHANGELOG.md
+      # --- Release-only steps below ---
+      - name: Check for previous release tag
+        id: prev_tag
         if: ${{ startsWith(steps.build_bin.outputs.binver, 'v') }}
+        run: |
+          PREV=$(git tag --sort=-creatordate | grep -E '^v' | sed -n '2p')
+          if [[ -n "$PREV" ]]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "No previous release tag found — skipping changelog generation for first release."
+          fi
+
+      - name: Update CHANGELOG.md
+        id: changelog
+        if: ${{ startsWith(steps.build_bin.outputs.binver, 'v') && steps.prev_tag.outputs.exists == 'true' }}
         uses: requarks/changelog-action@v1
         with:
           token: ${{ secrets.GH_TOKEN }}
           tag: ${{ github.ref_name }}
-          restrictToTypes: 'feat,fix,misc,chore,refactor' # others are ci
+          restrictToTypes: 'feat,fix,misc,chore,refactor'
           useGitmojis: false
           reverseOrder: true
 
-      - name: Upload to Modrinth and Github
+      - name: Commit CHANGELOG.md
+        if: ${{ startsWith(steps.build_bin.outputs.binver, 'v') && steps.prev_tag.outputs.exists == 'true' }}
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: master
+          commit_message: 'Release: Update CHANGELOG.md for ${{ steps.build_bin.outputs.binver }} [skip ci]'
+          file_pattern: CHANGELOG.md
+
+      - name: Upload to Modrinth and GitHub
         if: ${{ startsWith(steps.build_bin.outputs.binver, 'v') }}
         uses: Kir-Antipov/mc-publish@v3
-        with: 
+        with:
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           github-token: ${{ secrets.GH_TOKEN }}
 
           name: BetterTPA4Fabric ${{ steps.build_bin.outputs.binver }}
           files: build/libs/bettertpa4fabric-${{ steps.build_bin.outputs.binver }}.jar
           version-type: release
- 
-          github-generate-changelog: true
+
+          github-generate-changelog: false  # We already generate it above
           github-draft: false
           github-prerelease: false
           changelog-file: CHANGELOG.md
-
-      - name: Commit CHANGELOG.md
-        if: ${{ startsWith(steps.build_bin.outputs.binver, 'v') }}
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          branch: master
-          commit_message: 'Release: Update CHANGELOG.md for ${{ steps.build_bin.outputs.binver }} [skip ci]'
-          file_pattern: CHANGELOG.md
- 
