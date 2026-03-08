@@ -24,10 +24,9 @@ public class StaleRequestsCleanerTask extends TickableTask {
             if (data.teleportRequests.isEmpty()) continue;
             data.teleportRequests.values().removeIf(request -> {
                 if (!request.isExpired()) return false;
-                if (!request.getRequester().networkHandler.isConnectionOpen()) return true;
 
                 Pair<String, String> expiredMessages = request.getExpiredKeys();
-                if (expiredMessages.first() != null) {
+                if (expiredMessages.first() != null && request.getRequester().networkHandler.isConnectionOpen()) {
                     request.getRequester().sendMessage(MCTextUtils.fromLang(
                         expiredMessages.first(),
                         request.getTarget().getLeft().map(p -> p.getName().getString()).orElse("?")
@@ -35,7 +34,7 @@ public class StaleRequestsCleanerTask extends TickableTask {
                 }
 
                 request.getTarget().ifLeft(t -> {
-                    if (expiredMessages.second() != null) {
+                    if (expiredMessages.second() != null && t.networkHandler.isConnectionOpen()) {
                         t.sendMessage(MCTextUtils.fromLang(
                             expiredMessages.second(),
                             request.getRequester().getName().getString()
