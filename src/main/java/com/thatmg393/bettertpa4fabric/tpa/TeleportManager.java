@@ -12,9 +12,8 @@ import com.thatmg393.bettertpa4fabric.tpa.request.TPABackRequest;
 import com.thatmg393.bettertpa4fabric.tpa.request.TPAHereRequest;
 import com.thatmg393.bettertpa4fabric.tpa.request.TPARequest;
 import com.thatmg393.bettertpa4fabric.tpa.request.base.BaseRequest;
-import com.thatmg393.bettertpa4fabric.tpa.tickable.TickableTaskProcessor;
+import com.thatmg393.bettertpa4fabric.tpa.tickable.DefaultTickableTaskProcessor;
 import com.thatmg393.bettertpa4fabric.tpa.tickable.task.StaleRequestsCleanerTask;
-import com.thatmg393.bettertpa4fabric.tpa.tickable.task.base.TickableTask;
 import com.thatmg393.bettertpa4fabric.utils.MCTextUtils;
 
 import it.unimi.dsi.fastutil.Pair;
@@ -41,7 +40,7 @@ public class TeleportManager {
     );
 
     private final Object2ObjectOpenHashMap<UUID, PlayerData> playerDatas = new Object2ObjectOpenHashMap<>();
-    private final TickableTaskProcessor<TickableTask> tickableTasks = new TickableTaskProcessor<>();
+    private final DefaultTickableTaskProcessor tickableTasks = new DefaultTickableTaskProcessor();
 
     public void init() {
         ServerTickEvents.END_SERVER_TICK.register(server -> tickableTasks.doTick());
@@ -216,7 +215,6 @@ public class TeleportManager {
 
     public int allowTeleport(ServerPlayerEntity self, Boolean newValue) {
         PlayerData selfData = getPlayerData(self.getUuid());
-        
         if (newValue == null) {
             self.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.tpa_allow.status", selfData.allowTeleportRequests));
             return 1;
@@ -230,7 +228,7 @@ public class TeleportManager {
         String messageKey = "bettertpa4fabric.message.tpa_allow." + ((newValue) ? "enabled" : "disabled");
         self.sendMessage(MCTextUtils.fromLang(messageKey));
 
-        selfData.isPlayerTeleporting = newValue;
+        selfData.allowTeleportRequests = newValue;
         return 1;
     }
 
