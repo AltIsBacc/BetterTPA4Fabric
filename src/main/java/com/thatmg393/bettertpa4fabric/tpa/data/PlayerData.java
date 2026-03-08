@@ -2,6 +2,8 @@ package com.thatmg393.bettertpa4fabric.tpa.data;
 
 import java.util.UUID;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.thatmg393.bettertpa4fabric.tpa.queue.RequestQueue;
 import com.thatmg393.bettertpa4fabric.tpa.request.base.BaseRequest;
 
@@ -12,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 public class PlayerData {
     public final RequestQueue<UUID, BaseRequest> teleportRequests = new RequestQueue<>();
     
+    @Nullable
     public Pair<ServerWorld, BlockPos> previousTeleportPosition;
 
     public boolean isPlayerTeleporting = false;

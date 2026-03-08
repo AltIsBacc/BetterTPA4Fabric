@@ -22,7 +22,7 @@
     "bettertpa4fabric.message.tpahere.expired.accepter": "{}'s TPA-Here request has expired.",
 
     "bettertpa4fabric.message.tpa_allow.status": "TPA-Allow is currently {}.",
-    "betteerpa4dabric.message.tpa_allow.nothing_changed": "TPA-Allow state is the same as before! Nothing changed.",
+    "bettertpa4fabric.message.tpa_allow.nothing_changed": "TPA-Allow state is the same as before! Nothing changed.",
     "bettertpa4fabric.message.tpa_allow.enabled": "TPA-Allow is now on. You can now receive TPA requests.",
     "bettertpa4fabric.message.tpa_allow.disabled": "TPA-Allow is now off. No one can send you TPA requests until you turn it back on or rejoin.",
 
