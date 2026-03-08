@@ -11,12 +11,16 @@ function set_output() {
 
 function get_bin_ver() {
     local ver
-    ver=$(grep -Eo "$VERSION_PATTERN" gradle.properties | head -n1)
+    ver=$(grep -E "^mod_version=" gradle.properties | grep -Eo "$VERSION_PATTERN" | head -n1)
     if [[ -z "$ver" ]]; then
-        echo "ERROR: Could not find version in gradle.properties matching pattern: $VERSION_PATTERN" >&2
+        echo "ERROR: Could not find mod_version in gradle.properties matching pattern: $VERSION_PATTERN" >&2
         exit 1
     fi
     echo "$ver"
+}
+
+function get_mc_ver() {
+    grep -E "^minecraft_version=" gradle.properties | cut -d'=' -f2 | tr -d '[:space:]'
 }
 
 function update_binary_version() {
@@ -30,11 +34,9 @@ echo "--- Version Resolution ---"
 
 if [[ "$TAG" != refs/tags/v* ]]; then
     echo "Non-release build detected, using debug suffix"
-    current=$(get_bin_ver)
-    # Strip any existing suffix and apply +debug.shortcommit
-    base="${current%%+*}"
+    mc_ver=$(get_mc_ver)
     short_commit=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
-    new_version="${base}+debug.${short_commit}"
+    new_version="${mc_ver}+debug.${short_commit}"
     update_binary_version "$new_version"
 else
     TAG="${TAG#refs/tags/}"
