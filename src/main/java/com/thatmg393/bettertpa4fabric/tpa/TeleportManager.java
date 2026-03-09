@@ -25,13 +25,11 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ChunkTicketType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 
 public class TeleportManager {
     public static final TeleportManager INSTANCE = new TeleportManager();
@@ -252,32 +250,6 @@ public class TeleportManager {
 
             player.teleport(
                 world,
-                position.getX(), position.getY(), position.getZ(),
-                PositionFlag.DELTA,
-                player.getYaw(), player.getPitch(),
-                false
-            );
-
-            player.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.teleport.success"));
-        });
-    }
-
-    public void doTeleport(
-        ServerPlayerEntity player,
-        RegistryKey<World> world,
-        BlockPos position
-    ) {
-        ServerWorld currentWorld = player.getEntityWorld();
-        currentWorld.getServer().executeSync(() -> {
-            // this is version sensitive!
-            currentWorld.getChunkManager().addChunkLoadingTicket(
-                TPA, player.getChunkPos(), 3
-            );
-
-            getPlayerData(player.getUuid()).previousTeleportPosition = Pair.of(currentWorld.getRegistryKey(), player.getBlockPos());
-
-            player.teleport(
-                currentWorld.getServer().getWorld(world),
                 position.getX(), position.getY(), position.getZ(),
                 PositionFlag.DELTA,
                 player.getYaw(), player.getPitch(),

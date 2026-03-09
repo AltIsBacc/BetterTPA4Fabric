@@ -54,7 +54,7 @@ public abstract class BaseRequest {
                 }
                 case SUCCESS -> {
                     target.ifLeft(t -> TeleportManager.INSTANCE.doTeleport(teleportingPlayer, t.getEntityWorld(), t.getBlockPos()))
-                        .ifRight(pos -> TeleportManager.INSTANCE.doTeleport(teleportingPlayer, pos.first(), pos.second()));
+                        .ifRight(pos -> TeleportManager.INSTANCE.doTeleport(teleportingPlayer, teleportingPlayer.getEntityWorld().getServer().getWorld(pos.first()), pos.second()));
                 }
             }
         };
