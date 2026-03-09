@@ -1,5 +1,7 @@
 package com.thatmg393.bettertpa4fabric.tpa.request;
 
+import java.util.function.Consumer;
+
 import com.thatmg393.bettertpa4fabric.BetterTPA4Fabric;
 import com.thatmg393.bettertpa4fabric.tpa.TeleportManager;
 import com.thatmg393.bettertpa4fabric.tpa.request.base.BaseRequest;
@@ -19,13 +21,12 @@ public class TPABackRequest extends BaseRequest {
 
     @Override
     public TeleportTask accept() {
-        TeleportManager.INSTANCE.getPlayerData(getRequester().getUuid()).isPlayerTeleporting = true;
-        
+        Consumer<TeleportTask.Result> callback = buildCallback(getRequester(), getTarget());
         return new TeleportTask(
             getRequester(), getTarget().getLeft(),
             BetterTPA4Fabric.CONFIG.tpaTeleportTime * 20,
             res -> {
-                buildCallback(getRequester(), getTarget()).accept(res);
+                callback.accept(res);
                 if (res == TeleportTask.Result.SUCCESS && BetterTPA4Fabric.CONFIG.oneTimeTPABack) {
                     TeleportManager.INSTANCE.getPlayerData(getRequester().getUuid()).previousTeleportPosition = null;
                 }

@@ -18,6 +18,6 @@ public class PlayerData {
     @Nullable
     public Pair<RegistryKey<World>, BlockPos> previousTeleportPosition;
 
-    public boolean isPlayerTeleporting = false;
+    public boolean isTeleportingLocked = false;
     public boolean allowTeleportRequests = true;
 }

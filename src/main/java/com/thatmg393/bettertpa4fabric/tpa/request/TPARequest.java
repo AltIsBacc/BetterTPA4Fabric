@@ -16,7 +16,7 @@ public class TPARequest extends BaseRequest {
 
     @Override
     public TeleportTask accept() {
-        TeleportManager.INSTANCE.getPlayerData(getRequester().getUuid()).isPlayerTeleporting = true;
+        TeleportManager.INSTANCE.getPlayerData(getRequester().getUuid()).isTeleportingLocked = true;
         return new TeleportTask(
             getRequester(), getTarget().getLeft(),
             BetterTPA4Fabric.CONFIG.tpaTeleportTime * 20,

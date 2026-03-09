@@ -19,15 +19,21 @@ public abstract class BaseRequest {
         ServerPlayerEntity teleportingPlayer,
         Either<ServerPlayerEntity, Pair<RegistryKey<World>, BlockPos>> target
     ) {
+        TeleportManager.INSTANCE.getPlayerData(teleportingPlayer.getUuid()).isTeleportingLocked = true;
+        target.ifLeft(t -> TeleportManager.INSTANCE.getPlayerData(t.getUuid()).isTeleportingLocked = true);
+
         return res -> {
-            TeleportManager.INSTANCE.getPlayerData(teleportingPlayer.getUuid()).isPlayerTeleporting = false;
+            TeleportManager.INSTANCE.getPlayerData(teleportingPlayer.getUuid()).isTeleportingLocked = false;
+            target.ifLeft(t -> TeleportManager.INSTANCE.getPlayerData(t.getUuid()).isTeleportingLocked = false);
+
             switch (res) {
                 case REQUESTER_MOVED -> {
                     String key1 = "bettertpa4fabric.message.error.cancelled.you_moved";
                     String key2 = "bettertpa4fabric.message.error.cancelled.they_moved";
 
                     if (BetterTPA4Fabric.CONFIG.resetTimerOnMove) {
-                        TeleportManager.INSTANCE.getPlayerData(teleportingPlayer.getUuid()).isPlayerTeleporting = true;
+                        TeleportManager.INSTANCE.getPlayerData(teleportingPlayer.getUuid()).isTeleportingLocked = true;
+                        target.ifLeft(t -> TeleportManager.INSTANCE.getPlayerData(t.getUuid()).isTeleportingLocked = true);
 
                         key1 = "bettertpa4fabric.message.error.reset.you_moved";
                         key2 = "bettertpa4fabric.message.error.reset.they_moved";
