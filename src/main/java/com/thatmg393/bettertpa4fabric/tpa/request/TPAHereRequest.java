@@ -18,7 +18,6 @@ public class TPAHereRequest extends BaseRequest {
     @Override
     public TeleportTask accept() {
         ServerPlayerEntity teleportingPlayer = getTarget().getLeft().get();
-
         return new TeleportTask(
             teleportingPlayer, Optional.of(getRequester()),
             BetterTPA4Fabric.CONFIG.tpaTeleportTime * 20,

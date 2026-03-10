@@ -1,7 +1,6 @@
 package com.thatmg393.bettertpa4fabric.tpa.request;
 
 import com.thatmg393.bettertpa4fabric.BetterTPA4Fabric;
-import com.thatmg393.bettertpa4fabric.tpa.TeleportManager;
 import com.thatmg393.bettertpa4fabric.tpa.request.base.BaseRequest;
 import com.thatmg393.bettertpa4fabric.tpa.tickable.task.TeleportTask;
 import com.thatmg393.bettertpa4fabric.utils.Either;
@@ -16,7 +15,6 @@ public class TPARequest extends BaseRequest {
 
     @Override
     public TeleportTask accept() {
-        TeleportManager.INSTANCE.getPlayerData(getRequester().getUuid()).isTeleportingLocked = true;
         return new TeleportTask(
             getRequester(), getTarget().getLeft(),
             BetterTPA4Fabric.CONFIG.tpaTeleportTime * 20,
