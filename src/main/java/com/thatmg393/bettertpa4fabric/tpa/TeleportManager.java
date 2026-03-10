@@ -147,14 +147,14 @@ public class TeleportManager {
 
             accepterData.teleportRequests.consume();
         } else {
-            if (getPlayerData(from.getUuid()).isTeleportingLocked) {
-                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.they_are_teleporting"));
-                return 0;
-            }
-            
             request = accepterData.teleportRequests.findByKey(from.getUuid());
             if (request == null || request.isExpired()) {
                 accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.no_request_from_player", from.getName().getString()));
+                return 0;
+            }
+
+            if (getPlayerData(from.getUuid()).isTeleportingLocked) {
+                accepter.sendMessage(MCTextUtils.fromLang("bettertpa4fabric.message.error.they_are_teleporting"));
                 return 0;
             }
 
