@@ -10,7 +10,7 @@ import it.unimi.dsi.fastutil.Pair;
 public class StaleRequestsCleanerTask extends TickableTask {
 
     public StaleRequestsCleanerTask() {
-        super(19);
+        super(20);
     }
 
     @Override

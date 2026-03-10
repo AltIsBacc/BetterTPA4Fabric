@@ -19,7 +19,6 @@ public abstract class TickableTask {
         if (firstTick) {
             firstTick = false;
             onFirstTick();
-            return true;
         }
 
         return switch (onTick()) {
