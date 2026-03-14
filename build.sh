@@ -32,7 +32,7 @@ function update_binary_version() {
 
 echo "--- Version Resolution ---"
 
-if [[ "$TAG" != refs/tags/* ]]; then
+if [[ "$TAG" != refs/tags/v* ]]; then
     echo "Non-release build detected, using debug suffix"
     mc_ver=$(get_mc_ver)
     short_commit=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
