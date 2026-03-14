@@ -39,7 +39,8 @@ if [[ "$TAG" != refs/tags/* ]]; then
     new_version="${mc_ver}+debug.${short_commit}"
     update_binary_version "$new_version"
 else
-    TAG="${TAG#refs/tags/}"
+    read month day <<< $(date '+%m %d')
+    TAG="${TAG#refs/tags/}+release.$month$day"
     echo "Release build detected, tag: $TAG"
 
     # Validate the tag looks like a version (with or without leading v)
